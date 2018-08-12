@@ -6,25 +6,27 @@ Entity = function (game, name, health, power, index) {
     this.health = health;
     this.power = power;
     this.pos = index_to_pos(index);
-    Phaser.Sprite.call(this, game, this.pos[0] * field_size, this.pos[1] * field_size, name);
+    Phaser.Sprite.call(this, game,
+        this.pos[0] * field_size + field_size / 2,
+        this.pos[1] * field_size + field_size / 2, name);
 
     this.isTweening = true;
+    this.anchor.setTo(.5);
 
     if (health !== int_max) {
         var style = { font: "20px Helvetica", fill: "#202020", wordWrap:
                 true, wordWrapWidth: this.width, align: "center" };
-        text = game.make.text(field_size / 2, -5, " " + this.health + " ", style);
-        text.anchor.set(0.5);
+        this.text = game.make.text(0, -0.6 * field_size, " " + this.health + " ", style);
+        this.text.anchor.set(0.5);
 
         text_rect = game.make.graphics(0, 0);
         text_rect.beginFill(0xFFFFFF);
         text_rect.anchor.set(0.5);
         text_rect.alpha = 0.5;
-        text_rect.drawRect(field_size / 2 - text_rect_width / 2, -text_rect_height + 2,
-            text_rect_width, text_rect_height);
+        text_rect.drawRect(-text_rect_width / 2, -2.5 * text_rect_height, text_rect_width, text_rect_height);
 
         this.addChild(text_rect);
-        this.addChild(text);
+        this.addChild(this.text);
     }
 
     game.add.existing(this);
@@ -37,17 +39,27 @@ Entity.prototype.getSprite = function () {
     return this;
 };
 
+Entity.prototype.flip = function (flipped) {
+    if (flipped) {
+        this.scale.x = -1;
+        this.text.scale.x = -1;
+    } else {
+        this.scale.x = 1;
+        this.text.scale.x = 1;
+    }
+};
+
 Entity.prototype.setHealth = function (health) {
     this.health = health;
     if (health !== int_max) {
-        text.setText(" " + this.health + " ");
+        this.text.setText(" " + this.health + " ");
     }
 };
 
 Entity.prototype.setPosition = function (index) {
-    // this.pos = index_to_pos(index);
-    // this.sprite.x = this.pos[0] * field_size;
-    // this.sprite.y = this.pos[1] * field_size;
+    //this.pos = index_to_pos(index);
+    //this.sprite.x = this.pos[0] * field_size;
+    //this.sprite.y = this.pos[1] * field_size;
 };
 
 Entity.prototype.getName = function () {
