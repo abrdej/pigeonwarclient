@@ -1,5 +1,8 @@
 var panel = {};
 
+panel.hint_text = null;
+panel.hint_rect = null;
+
 panel.initialize = function (cols, rows, buttons_n) {
 
     panel.number_of_buttons = buttons_n;
@@ -9,6 +12,7 @@ panel.initialize = function (cols, rows, buttons_n) {
 
     panel.buttons = [];
     panel.icons = [];
+    panel.hint_timers = [];
 
     for (n = 0; n < buttons_n; n++) {
         x = x_pos + n * field_size + field_size / 4;
@@ -16,6 +20,7 @@ panel.initialize = function (cols, rows, buttons_n) {
 
         var button = game.add.sprite(x + field_size / 2, y, 'Border');
         var icon = game.add.sprite(x + field_size / 2, y);
+        var waiting_for_hint = false;
 
         button.sendToBack();
         button.inputEnabled = true;
@@ -24,25 +29,38 @@ panel.initialize = function (cols, rows, buttons_n) {
 
         icon.anchor.set(0.5);
 
-        var onOver = function (button, icon, object, pointer) {
+        var hint_timer = null;
+
+        var onOver = function (button, icon, hint_timer, n, object, pointer) {
             button.scale.setTo(1.2);
             button.bringToTop();
             icon.scale.setTo(1.2);
             icon.bringToTop();
+            // if (hint_timer) {
+            //     clearTimeout(hint_timer);
+            //     hint_timer = null;
+            // }
+            // hint_timer = window.setTimeout(onGetHint.bind(this, n), 1000);
         };
 
-        var onOut = function (button, icon, object, pointer) {
+        var onOut = function (button, icon, hint_timer, object, pointer) {
             button.scale.setTo(1);
             icon.scale.setTo(1);
             icon.sendToBack();
             button.sendToBack();
+            if (hint_timer) {
+                clearTimeout(hint_timer);
+                hint_timer = null;
+            }
+            panel.remove_hint();
         };
 
-        button.events.onInputOver.add(onOver.bind(this, button, icon));
-        button.events.onInputOut.add(onOut.bind(this, button, icon));
+        button.events.onInputOver.add(onOver.bind(this, button, icon, hint_timer, n));
+        button.events.onInputOut.add(onOut.bind(this, button, icon, hint_timer));
 
         panel.buttons.push(button);
         panel.icons.push(icon);
+        panel.hint_timers.push(hint_timer);
     }
 
 
@@ -73,8 +91,6 @@ panel.initialize = function (cols, rows, buttons_n) {
         panel.entity_logo.scale.setTo(1.2);
     });
 
-
-
     var style_for_entity_name = { font: "24px Helvetica", fill: "#FFFFFF", wordWrap:
             true, wordWrapWidth: this.width, align: "center" };
     panel.entity_name_text = game.add.text(field_size + field_size / 1.8,
@@ -95,6 +111,9 @@ panel.initialize = function (cols, rows, buttons_n) {
 };
 
 panel.setForEntity = function(entity_id) {
+
+    console.log("entity_id: " + entity_id);
+
     if (entity_id !== no_entity_id) {
         panel.entity_logo.loadTexture(entities[entity_id].name);
         panel.entity_name_text.setText(entities[entity_id].name);
@@ -123,5 +142,39 @@ panel.setForEntity = function(entity_id) {
         } else {
             panel.icons[i].loadTexture('__default');
         }
+    }
+};
+
+panel.set_hint = function (hint) {
+    panel.remove_hint();
+    if (hint !== "") {
+        var style_for_hint = {
+            font: "18px Helvetica", fill: "#FFFFFF", wordWrap:
+                true, wordWrapWidth: 0.7 * game.width, align: "center"
+        };
+        panel.hint_text = game.add.text(game.world.centerX, game.world.centerX, hint, style_for_hint);
+        panel.hint_text.anchor.set(0.5);
+
+        var text_height = panel.hint_text.height + 10;
+
+        console.log("text_height: " + text_height);
+
+        panel.hint_rect = game.add.graphics(game.world.centerX, game.world.centerX);
+        panel.hint_rect.beginFill(0x000000);
+        panel.hint_rect.anchor.set(0.5);
+        panel.hint_rect.drawRect(-(0.75 * game.width) / 2, -text_height / 2, 0.75 * game.width, text_height);
+
+        panel.hint_text.bringToTop();
+    }
+};
+
+panel.remove_hint = function () {
+    if (panel.hint_text) {
+        panel.hint_text.destroy();
+        panel.hint_text = null;
+    }
+    if (panel.hint_rect) {
+        panel.hint_rect.destroy();
+        panel.hint_rect = null;
     }
 };

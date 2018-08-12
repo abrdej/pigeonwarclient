@@ -19,13 +19,16 @@ Entity = function (game, name, health, power, index) {
         this.text = game.make.text(0, -0.6 * field_size, " " + this.health + " ", style);
         this.text.anchor.set(0.5);
 
-        text_rect = game.make.graphics(0, 0);
-        text_rect.beginFill(0xFFFFFF);
-        text_rect.anchor.set(0.5);
-        text_rect.alpha = 0.5;
-        text_rect.drawRect(-text_rect_width / 2, -2.5 * text_rect_height, text_rect_width, text_rect_height);
+        this.text_rect = game.make.graphics(0, 0);
+        this.text_rect.beginFill(0xFFFFFF);
+        this.text_rect.anchor.set(0.5);
+        this.text_rect.alpha = 0.5;
+        this.text_rect.drawRect(-text_rect_width / 2, -2.5 * text_rect_height, text_rect_width, text_rect_height);
 
-        this.addChild(text_rect);
+        // game.world.bringToTop(this.text_rect);
+        // this.text.bringToTop();
+
+        this.addChild(this.text_rect);
         this.addChild(this.text);
     }
 
@@ -51,19 +54,37 @@ Entity.prototype.flip = function (flipped) {
 
 Entity.prototype.setHealth = function (health) {
     this.health = health;
-    if (health !== int_max) {
+    if (this.health !== int_max) {
         this.text.setText(" " + this.health + " ");
     }
 };
 
+Entity.prototype.changeHealth = function (amount) {
+    this.health += amount;
+    if (this.health !== int_max) {
+        this.text.setText(" " + this.health + " ");
+    }
+};
+
+Entity.prototype.changePower = function (amount) {
+    this.power += amount;
+};
+
 Entity.prototype.setPosition = function (index) {
-    //this.pos = index_to_pos(index);
-    //this.sprite.x = this.pos[0] * field_size;
-    //this.sprite.y = this.pos[1] * field_size;
+    this.pos = index_to_pos(index);
+    this.x = this.pos[0] * field_size + field_size / 2;
+    this.y = this.pos[1] * field_size + field_size / 2;
 };
 
 Entity.prototype.getName = function () {
     return this.name;
+};
+
+Entity.prototype.healthToTop = function () {
+    if (typeof this.text !== 'undefined') {
+        this.text.bringToTop();
+        game.world.bringToTop(this.text_rect);
+    }
 };
 
 update_healths = function (entities_healths) {
@@ -81,17 +102,25 @@ update_positions = function (board_state) {
 };
 
 entity_at = function (board_index) {
-    results = Object.keys(entities).find(function (key, index, array) {
-        pos = index_to_pos(board_index);
+    var results = Object.keys(entities).find(function (key, index, array) {
+        var pos = index_to_pos(board_index);
         if (pos[0] === entities[key].pos[0] &&  pos[1] === entities[key].pos[1]) {
             return true;
         }
     });
 
+    console.log("results: " << results);
+
     if (results !== -1)
         return results;
 
     return no_entity_id;
+};
+
+bring_entities_to_top = function () {
+    Object.keys(entities).forEach(function (key, index, array) {
+        entities[key].healthToTop();
+    });
 };
 
 update_for_entity = function () {
@@ -101,7 +130,7 @@ update_for_entity = function () {
 
     console.log("selected_index: " + selected_index);
 
-    entity_id = entity_at(selected_index);
+    var entity_id = entity_at(selected_index);
 
     console.log("entity_id:" + entity_id);
 

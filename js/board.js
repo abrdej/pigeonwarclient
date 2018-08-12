@@ -36,7 +36,7 @@ board.update_state = function () {
             } else if (actual_target_type === "enemy") {
 
                 if (valid_movements.indexOf(index) !== -1) {
-                    board.fields[index].loadTexture('GrassEnemy');
+                    board.fields[index].loadTexture('GrassDamage');
 
                 } else {
                     board.fields[index].loadTexture('GrassAttack');

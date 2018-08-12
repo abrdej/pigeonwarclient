@@ -1,5 +1,7 @@
 var client_id = {};
 
+var msg_queue = [];
+
 var no_selected_index = 4294967295;
 var int_max = 2147483647;
 var no_entity_id = 2147483647;
