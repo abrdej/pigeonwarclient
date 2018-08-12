@@ -24,6 +24,9 @@ loadBitmaps = function () {
     game.load.image('grenade', 'res/grenade.png');
     game.load.image('tongue_of_fire', 'res/tongue_of_fire.png');
 
+    game.load.image('bullet', 'res/bullet.png');
+    game.load.image('bum', 'res/bum.png');
+
 
     game.load.onLoadComplete.add(loadCompleted, this);
 

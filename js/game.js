@@ -1,3 +1,8 @@
+// var _ = {};
+// require(['lodash'], function (lodash) {
+//     _ = lodash;
+// });
+
 var field_size = 60;
 var board_cols = 15;
 var board_rows = 10;

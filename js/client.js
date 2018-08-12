@@ -23,8 +23,6 @@ client.connect = function () {
                 var entity_id = entities_pack[i][0];
                 var entity_data = [];
 
-                console.log(entity_id);
-
                 entity_data = entities_pack[i][1];
 
                 var entity_name = entity_data[0];
