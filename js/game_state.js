@@ -12,3 +12,5 @@ var selected_index;
 var actual_target_type = "";
 var button_bitmaps = [];
 var selected_entity_name = "";
+
+var entities_additional_effects = {};

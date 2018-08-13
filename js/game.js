@@ -101,6 +101,13 @@ function update() {
             // std::unordered_map<std::uint32_t, std::string> entities_names;
             // std::unordered_map<std::uint32_t, std::vector<std::string>> entities_additional_effects;
 
+            entities_additional_effects = global_state['entities_additional_effects'];
+            // console.log(entities_additional_effects);
+            // if (entities_additional_effects) {
+            //     console.log(entities_additional_effects[0]);
+            // }
+
+
         } else if (json_data.hasOwnProperty("animation")) {
             animation.handle(json_data["animation"]);
 

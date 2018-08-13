@@ -7,20 +7,19 @@ panel.initialize = function (cols, rows, buttons_n) {
 
     panel.number_of_buttons = buttons_n;
 
-    x_pos = 2 * field_size + field_size / 2;
-    y_pos = rows * field_size + field_size / 4 + field_size / 2;
+    var x_pos = 2 * field_size + field_size / 2;
+    var y_pos = rows * field_size + field_size / 4 + field_size / 2;
 
     panel.buttons = [];
     panel.icons = [];
-    panel.hint_timers = [];
+    panel.hint_timer = null;
 
-    for (n = 0; n < buttons_n; n++) {
-        x = x_pos + n * field_size + field_size / 4;
-        y = y_pos;
+    for (var n = 0; n < buttons_n; n++) {
+        var x = x_pos + n * field_size + field_size / 4;
+        var y = y_pos;
 
         var button = game.add.sprite(x + field_size / 2, y, 'Border');
         var icon = game.add.sprite(x + field_size / 2, y);
-        var waiting_for_hint = false;
 
         button.sendToBack();
         button.inputEnabled = true;
@@ -29,38 +28,35 @@ panel.initialize = function (cols, rows, buttons_n) {
 
         icon.anchor.set(0.5);
 
-        var hint_timer = null;
-
-        var onOver = function (button, icon, hint_timer, n, object, pointer) {
+        var onOver = function (button, icon, n, object, pointer) {
             button.scale.setTo(1.2);
             button.bringToTop();
             icon.scale.setTo(1.2);
             icon.bringToTop();
-            // if (hint_timer) {
-            //     clearTimeout(hint_timer);
-            //     hint_timer = null;
-            // }
-            // hint_timer = window.setTimeout(onGetHint.bind(this, n), 1000);
+            if (panel.hint_timer) {
+                 clearTimeout(panel.hint_timer);
+                panel.hint_timer = null;
+            }
+            panel.hint_timer = window.setTimeout(onGetHint.bind(this, n), 1000);
         };
 
-        var onOut = function (button, icon, hint_timer, object, pointer) {
+        var onOut = function (button, icon, object, pointer) {
             button.scale.setTo(1);
             icon.scale.setTo(1);
             icon.sendToBack();
             button.sendToBack();
-            if (hint_timer) {
-                clearTimeout(hint_timer);
-                hint_timer = null;
+            if (panel.hint_timer) {
+                clearTimeout(panel.hint_timer);
+                panel.hint_timer = null;
             }
             panel.remove_hint();
         };
 
-        button.events.onInputOver.add(onOver.bind(this, button, icon, hint_timer, n));
-        button.events.onInputOut.add(onOut.bind(this, button, icon, hint_timer));
+        button.events.onInputOver.add(onOver.bind(this, button, icon, n));
+        button.events.onInputOut.add(onOut.bind(this, button, icon));
 
         panel.buttons.push(button);
         panel.icons.push(icon);
-        panel.hint_timers.push(hint_timer);
     }
 
 
@@ -108,6 +104,54 @@ panel.initialize = function (cols, rows, buttons_n) {
 
     panel.entity_power_text = game.add.text(field_size + field_size / 1.2,
         rows * field_size + field_size / 1.5, "", style_for_power);
+
+    panel.effect_slots = [];
+    panel.effect_icons = [];
+
+    for (var m = 0; m < 3; m++) {
+        x = x_pos + (m + 6) * field_size + field_size / 4;
+        y = y_pos;
+
+        var slot = game.add.sprite(x + field_size / 2, y, 'Border');
+        icon = game.add.sprite(x + field_size / 2, y);
+
+        slot.sendToBack();
+        slot.inputEnabled = true;
+        slot.anchor.set(0.5);
+        // button.events.onInputDown.add(onButton.bind(this, n));
+
+        icon.anchor.set(0.5);
+
+        onOver = function (slot, icon, m, object, pointer) {
+            slot.scale.setTo(1.2);
+            slot.bringToTop();
+            icon.scale.setTo(1.2);
+            icon.bringToTop();
+            // if (panel.hint_timer) {
+            //     clearTimeout(panel.hint_timer);
+            //     panel.hint_timer = null;
+            // }
+            // panel.hint_timer = window.setTimeout(onGetHint.bind(this, n), 1000);
+        };
+
+        onOut = function (slot, icon, object, pointer) {
+            slot.scale.setTo(1);
+            icon.scale.setTo(1);
+            icon.sendToBack();
+            slot.sendToBack();
+            // if (panel.hint_timer) {
+            //     clearTimeout(panel.hint_timer);
+            //     panel.hint_timer = null;
+            // }
+            // panel.remove_hint();
+        };
+
+        button.events.onInputOver.add(onOver.bind(this, slot, icon, m));
+        button.events.onInputOut.add(onOut.bind(this, slot, icon));
+
+        panel.effect_slots.push(slot);
+        panel.effect_icons.push(icon);
+    }
 };
 
 panel.setForEntity = function(entity_id) {

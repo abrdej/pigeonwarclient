@@ -136,16 +136,15 @@ update_for_entity = function () {
 
     if (entity_id !== no_entity_id) {
 
-        console.log("entity_id !== no_entity_id");
-
         panel.setForEntity(entity_id);
 
-
-        // auto this_entity_id = state.board.at(lstate.selected_index);
-        // std::string effects;
-        // for (auto&& effect : state.entities_additional_effects[this_entity_id]) {
-        //     effects += effect;
-        //     effects += "\n";
-        // }
+        var effects = [];
+        for (var i = 0; i < entities_additional_effects.length; i++) {
+            if (entity_id == entities_additional_effects[i][0]) {
+                effects = entities_additional_effects[i][1];
+                break;
+            }
+        }
+        console.log("effects: " + effects);
     }
 };

@@ -28,6 +28,7 @@ loadBitmaps = function () {
     game.load.image('Poisoner', 'res/poisoner.png');
     game.load.image('Samurai', 'res/samurai.png');
     game.load.image('Sniper', 'res/sniper.png');
+    game.load.image('Wolf', 'res/wolf.png');
 
     game.load.image('Saurian Web', 'res/saurian_web.png');
 
@@ -62,7 +63,33 @@ loadBitmaps = function () {
     game.load.image('prison_connection', 'res/prison_connection.png');
     game.load.image('protection_field', 'res/protection_field.png');
     game.load.image('sorcerer_attack', 'res/sorcerer_attack.png');
-
+    game.load.image('sword_blow', 'res/sword_blow.png');
+    game.load.image('samurai_sword_blow', 'res/samurai_sword_blow.png');
+    game.load.image('dodge', 'res/dodge.png');
+    game.load.image('poisoned_missile', 'res/poisoned_missile.png');
+    game.load.image('poisoned_missile_explosion', 'res/poisoned_missile_explosion.png');
+    game.load.image('spear', 'res/spear.png');
+    game.load.image('guardian_attack', 'res/guardian_attack.png');
+    game.load.image('shield', 'res/shield.png');
+    game.load.image('power_bullet', 'res/power_bullet.png');
+    game.load.image('laser', 'res/laser.png');
+    game.load.image('teleport', 'res/teleport.png');
+    game.load.image('sniper_bullet', 'res/sniper_bullet.png');
+    game.load.image('sniper_bullet_explosion', 'res/sniper_bullet_explosion.png');
+    game.load.image('hypnosis', 'res/hypnosis.png');
+    game.load.image('stone_skin', 'res/stone_skin.png');
+    game.load.image('arrow', 'res/arrow.png');
+    game.load.image('arrow_anim', 'res/arrow_anim.png');
+    game.load.image('aura_of_destruction', 'res/aura_of_destruction.png');
+    game.load.image('destruction_1', 'res/destruction_1.png');
+    game.load.image('destruction_2', 'res/destruction_2.png');
+    game.load.image('destruction_3', 'res/destruction_3.png');
+    game.load.image('jaw_spider', 'res/jaw_spider.png');
+    game.load.image('spider_web', 'res/spider_web.png');
+    game.load.image('surroundings', 'res/surroundings.png');
+    game.load.image('rocket', 'res/rocket.png');
+    game.load.image('flame_thrower', 'res/flame_thrower.png');
+    game.load.image('claws', 'res/claws.png');
 
     game.load.onLoadComplete.add(loadCompleted, this);
 

@@ -13,11 +13,11 @@ motion_speed_slow = function (distance) {
 };
 
 motion_speed_medium = function (distance) {
-    return distance * 400;
+    return distance * 150;
 };
 
 motion_speed_high = function (distance) {
-    return distance * 500;
+    return distance * 100;
 };
 
 pos_to_real_dimensions = function (pos) {
@@ -288,7 +288,7 @@ set_immortality_handler = function (animation_data) {
 };
 
 remove_invisibility_handler = function (animation_data) {
-    return change_bitmap_base_handler(animation_data, 'saberhand');
+    return change_bitmap_base_handler(animation_data, 'Saberhand');
 };
 
 start_sorcerer_attack_handler = function (animation_data) {
@@ -313,6 +313,18 @@ warrior_blow_handler = function (animation_data) {
 
 prison_connection_handler = function (animation_data) {
     return bitmap_flush_base_handler(animation_data, 'protection_field', 150, false);
+};
+
+sword_blow_handler = function (animation_data) {
+    return bitmap_flush_base_handler(animation_data, 'samurai_sword_blow', 150, true);
+};
+
+dodge_handler = function (animation_data) {
+    return bitmap_flush_base_handler(animation_data, 'dodge', 150, true);
+};
+
+claws_handler = function (animation_data) {
+    return move_and_return_base_handler(animation_data, false, 'claws');
 };
 
 magic_bullet_handler = function (animation_data) {
@@ -360,6 +372,158 @@ blow_the_ax_handler = function (animation_data) {
     return move_and_return_base_handler(animation_data, false);
 };
 
+poisoned_missile_handler = function (animation_data) {
+    return shoot_base_handler(animation_data, 'poisoned_missile', 'poisoned_missile_explosion');
+};
+
+spear_handler = function (animation_data) {
+    return move_and_return_base_handler(animation_data, false, 'guardian_attack');
+};
+
+poison_handler = function (animation_data) {
+    return bitmap_flush_base_handler(animation_data, 'poison_effect', 150, false);
+};
+
+power_bullet_handler = function (animation_data) {
+    return shoot_base_handler(animation_data, 'power_bullet', 'power_bullet_bum');
+};
+
+laser_handler = function (animation_data) {
+    return shoot_base_handler(animation_data, 'laser');
+};
+
+teleport_handler = function (animation_data) {
+    var entity_id = animation_data[1];
+    var to_index = animation_data[2];
+    var to_pos = index_to_pos(to_index);
+
+    var entity_sprite = entities[entity_id];
+    entity_sprite.pos = to_pos;
+
+    var teleport_tween_1 = game.add.tween(entity_sprite).to({y: '0'}, 100, Phaser.Easing.Linear.None);
+    var teleport_tween_2 = game.add.tween(entity_sprite).to({y: '0'}, 150, Phaser.Easing.Linear.None);
+
+    teleport_tween_1.onStart.add(function () {
+        entity_sprite.loadTexture("teleport");
+    });
+    teleport_tween_1.onComplete.add(function () {
+        entity_sprite.x = to_pos[0] * field_size + field_size / 2;
+        entity_sprite.y = to_pos[1] * field_size + field_size / 2;
+    });
+    teleport_tween_2.onStart.add(function () {
+        entity_sprite.loadTexture("teleport");
+    });
+    teleport_tween_2.onComplete.add(function () {
+        entity_sprite.loadTexture("Droid");
+        is_animation_running = false;
+    });
+    teleport_tween_1.chain(teleport_tween_2);
+    is_animation_running = true;
+    teleport_tween_1.start();
+};
+
+sniper_shot_handler = function (animation_data) {
+    return shoot_base_handler(animation_data, 'sniper_bullet', 'sniper_bullet_explosion');
+};
+
+arrow_handler = function (animation_data) {
+    return shoot_base_handler(animation_data, 'arrow_anim');
+};
+
+flame_thrower_handler = function (animation_data) {
+    return shoot_base_handler(animation_data, 'flame_thrower', 'detonation');
+};
+
+rocket_launcher_handler = function (animation_data) {
+    return shoot_base_handler(animation_data, 'rocket', 'bum');
+};
+
+hypnosis_handler = function (animation_data) {
+    return bitmap_flush_base_handler(animation_data, 'hypnosis', 150, false);
+};
+
+jaw_spider_handler = function (animation_data) {
+    return bitmap_flush_base_handler(animation_data, 'jaw_spider', 150, false);
+};
+
+destruction_handler = function (animation_data) {
+    var index = animation_data[1];
+    var pos = index_to_pos(index);
+
+    var destruction = game.add.sprite(pos[0] * field_size + field_size / 2,
+        pos[1] * field_size + field_size / 2, 'destruction_1');
+    destruction.anchor.set(0.5);
+
+    var destruction_tween_1 = game.add.tween(destruction).to({x: '0'}, 75);
+    var destruction_tween_2 = game.add.tween(destruction).to({x: '0'}, 75);
+    var destruction_tween_3 = game.add.tween(destruction).to({x: '0'}, 75);
+    destruction_tween_2.onStart.add(function () {
+        destruction.loadTexture("destruction_2");
+    });
+    destruction_tween_3.onStart.add(function () {
+        destruction.loadTexture("destruction_3");
+    });
+    destruction_tween_3.onComplete.add(function () {
+        destruction.destroy();
+        is_animation_running = false;
+    });
+    destruction_tween_1.chain(destruction_tween_2);
+    destruction_tween_2.chain(destruction_tween_3);
+    is_animation_running = true;
+    destruction_tween_1.start();
+};
+
+spider_web_handler = function (animation_data) {
+    var from_index = animation_data[1];
+    var to_index = animation_data[2];
+    var land_index = animation_data[3];
+
+    var from_pos = index_to_pos(from_index);
+    var to_pos = index_to_pos(to_index);
+    var land_pos = index_to_pos(land_index);
+
+    var enemy_id = entity_at(to_index);
+
+    var distance = motion_distance(from_pos, to_pos);
+
+    var start_x = from_pos[0] * field_size + field_size / 2;
+    var start_y = from_pos[1] * field_size + field_size / 2;
+
+    var web = game.add.sprite(start_x, start_y, 'spider_web');
+    web.anchor.set(0.5);
+
+    if (from_pos[0] - to_pos[0] > 0) {
+        web.scale.x = -1;
+    } else {
+        web.scale.x = 1;
+    }
+
+    var web_tween = game.add.tween(web).to(pos_to_real_dimensions(to_pos), motion_speed_medium(distance),
+        Phaser.Easing.Linear.None);
+    web_tween.onComplete.add(function () {
+        entities[enemy_id].visible = false;
+        if (to_index !== land_index) {
+            var web_tween_return = game.add.tween(web).to(pos_to_real_dimensions(from_pos), motion_speed_medium(distance),
+                Phaser.Easing.Linear.None);
+            web_tween_return.onComplete.add(function () {
+                entities[enemy_id].x = land_pos[0] * field_size + field_size / 2;
+                entities[enemy_id].y = land_pos[1] * field_size + field_size / 2;
+                entities[enemy_id].pos = land_pos;
+                entities[enemy_id].visible = true;
+                web.destroy();
+                is_animation_running = false;
+            });
+            web_tween_return.start();
+        } else {
+            entities[enemy_id].visible = true;
+            web.destroy();
+            is_animation_running = false;
+        }
+    });
+    is_animation_running = true;
+    web_tween.start();
+};
+
 animation.initialize = function () {
     animation.services = {};
     animation.services['move'] = move_handler;
@@ -380,6 +544,25 @@ animation.initialize = function () {
     animation.services['prison_connection'] = prison_connection_handler;
     animation.services['start_sorcerer_attack'] = start_sorcerer_attack_handler;
     animation.services['end_sorcerer_attack'] = end_sorcerer_attack_handler;
+    animation.services['sword_blow'] = sword_blow_handler;
+    animation.services['dodge'] = dodge_handler;
+    animation.services['poisoned_missile'] = poisoned_missile_handler;
+    animation.services['poison'] = poison_handler;
+    animation.services['spear'] = spear_handler;
+    animation.services['spear'] = spear_handler;
+    animation.services['power_bullet'] = power_bullet_handler;
+    animation.services['laser'] = laser_handler;
+    animation.services['teleport'] = teleport_handler;
+    animation.services['sniper_shot'] = sniper_shot_handler;
+    animation.services['hypnosis'] = hypnosis_handler;
+    animation.services['destruction'] = destruction_handler;
+    animation.services['arrow'] = arrow_handler;
+    animation.services['jaw_spider'] = jaw_spider_handler;
+    animation.services['spider_web'] = spider_web_handler;
+    animation.services['flame_thrower'] = flame_thrower_handler;
+    animation.services['rocket_launcher'] = rocket_launcher_handler;
+    animation.services['spider_web'] = spider_web_handler;
+    animation.services['claws'] = claws_handler;
 };
 
 animation.handle = function (animation_data) {
