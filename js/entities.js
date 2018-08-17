@@ -8,8 +8,11 @@ loadBitmaps = function () {
     game.load.image('GrassFriendly', 'res/grass_friendly.png');
     game.load.image('GrassSelected', 'res/grass_selected.png');
     game.load.image('Border', 'res/border.png');
+    game.load.image('shifter', 'res/shifter.png');
 
     game.load.image('Tree', 'res/tree.png');
+    // game.load.image('Fir', 'res/fir.png');
+    game.load.image('Fir', 'res/withered_pine.png');
     game.load.image('Saurian', 'res/saurian.png');
     game.load.image('Stone', 'res/stone.png');
     game.load.image('Shooter', 'res/shooter.png');
@@ -29,6 +32,8 @@ loadBitmaps = function () {
     game.load.image('Samurai', 'res/samurai.png');
     game.load.image('Sniper', 'res/sniper.png');
     game.load.image('Wolf', 'res/wolf.png');
+    game.load.image('Spectre', 'res/spectre.png');
+    game.load.image('Pixie', 'res/pixie.png');
 
     game.load.image('Saurian Web', 'res/saurian_web.png');
 
@@ -90,6 +95,18 @@ loadBitmaps = function () {
     game.load.image('rocket', 'res/rocket.png');
     game.load.image('flame_thrower', 'res/flame_thrower.png');
     game.load.image('claws', 'res/claws.png');
+    game.load.image('cleaver', 'res/cleaver.png');
+    game.load.image('spectre_cleaver', 'res/spectre_cleaver.png');
+    game.load.image('havoc', 'res/havoc.png');
+    game.load.image('immateriality', 'res/immateriality.png');
+    game.load.image('dark_forest', 'res/dark_forest.png');
+    game.load.image('poke', 'res/poke.png');
+    game.load.image('destroyer_attack', 'res/destroyer_attack.png');
+
+    // effects
+    game.load.image('viewfinder', 'res/arrow.png');
+    game.load.image('poisoning', 'res/poisoning.png');
+
 
     game.load.onLoadComplete.add(loadCompleted, this);
 

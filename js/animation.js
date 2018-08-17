@@ -369,7 +369,7 @@ magic_bullet_handler = function (animation_data) {
 };
 
 blow_the_ax_handler = function (animation_data) {
-    return move_and_return_base_handler(animation_data, false);
+    return move_and_return_base_handler(animation_data, false, 'destroyer_attack');
 };
 
 poisoned_missile_handler = function (animation_data) {
@@ -378,6 +378,14 @@ poisoned_missile_handler = function (animation_data) {
 
 spear_handler = function (animation_data) {
     return move_and_return_base_handler(animation_data, false, 'guardian_attack');
+};
+
+poke_handler = function (animation_data) {
+    return move_and_return_base_handler(animation_data, false);
+};
+
+cleaver_handler = function (animation_data) {
+    return move_and_return_base_handler(animation_data, false, 'spectre_cleaver');
 };
 
 poison_handler = function (animation_data) {
@@ -424,6 +432,42 @@ teleport_handler = function (animation_data) {
 
 sniper_shot_handler = function (animation_data) {
     return shoot_base_handler(animation_data, 'sniper_bullet', 'sniper_bullet_explosion');
+};
+
+havoc_handler = function (animation_data) {
+    var from_index = animation_data[1];
+    var to_index = animation_data[2];
+
+    var from_pos = index_to_pos(from_index);
+    var to_pos = index_to_pos(to_index);
+
+    var distance = motion_distance(from_pos, to_pos);
+
+    var start_x = from_pos[0] * field_size + field_size / 2;
+    var start_y = from_pos[1] * field_size + field_size / 2;
+
+    var havoc = game.add.sprite(start_x, start_y, 'havoc');
+    havoc.anchor.set(0.5);
+    havoc.scale.x = 0.3;
+    havoc.scale.y = 0.3;
+
+    var havoc_tween_1 = game.add.tween(havoc.scale).to({x: 1, y: 1}, 200);
+    var havoc_tween_2 = game.add.tween(havoc).to(pos_to_real_dimensions(to_pos), motion_speed_high(distance),
+        Phaser.Easing.Linear.None);
+    var havoc_tween_3 = game.add.tween(havoc.scale).to({x: 1.3, y: 1.3}, 200);
+    var havoc_tween_4 = game.add.tween(havoc).to({alpha: 0}, 200);
+
+    havoc_tween_1.chain(havoc_tween_2);
+    havoc_tween_2.onComplete.add(function () {
+        havoc_tween_3.start();
+        havoc_tween_4.start();
+    });
+    havoc_tween_4.onComplete.add(function () {
+        havoc.destroy();
+        is_animation_running = false;
+    });
+    is_animation_running = true;
+    havoc_tween_1.start();
 };
 
 arrow_handler = function (animation_data) {
@@ -563,6 +607,10 @@ animation.initialize = function () {
     animation.services['rocket_launcher'] = rocket_launcher_handler;
     animation.services['spider_web'] = spider_web_handler;
     animation.services['claws'] = claws_handler;
+    animation.services['cleaver'] = cleaver_handler;
+    animation.services['havoc'] = havoc_handler;
+    animation.services['spectre_power_charging'] = function (animation_data) { };
+    animation.services['poke'] = poke_handler;
 };
 
 animation.handle = function (animation_data) {

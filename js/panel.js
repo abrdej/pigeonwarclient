@@ -3,6 +3,8 @@ var panel = {};
 panel.hint_text = null;
 panel.hint_rect = null;
 
+panel.effects = [];
+
 panel.initialize = function (cols, rows, buttons_n) {
 
     panel.number_of_buttons = buttons_n;
@@ -127,11 +129,15 @@ panel.initialize = function (cols, rows, buttons_n) {
             slot.bringToTop();
             icon.scale.setTo(1.2);
             icon.bringToTop();
-            // if (panel.hint_timer) {
-            //     clearTimeout(panel.hint_timer);
-            //     panel.hint_timer = null;
-            // }
-            // panel.hint_timer = window.setTimeout(onGetHint.bind(this, n), 1000);
+
+            if (panel.hint_timer) {
+                clearTimeout(panel.hint_timer);
+                panel.hint_timer = null;
+            }
+            var onEffect = function (m) {
+                onEffectHint(panel.effects[m])
+            };
+            panel.hint_timer = window.setTimeout(onEffect.bind(this, m), 100);
         };
 
         onOut = function (slot, icon, object, pointer) {
@@ -139,19 +145,46 @@ panel.initialize = function (cols, rows, buttons_n) {
             icon.scale.setTo(1);
             icon.sendToBack();
             slot.sendToBack();
-            // if (panel.hint_timer) {
-            //     clearTimeout(panel.hint_timer);
-            //     panel.hint_timer = null;
-            // }
-            // panel.remove_hint();
+            if (panel.hint_timer) {
+                 clearTimeout(panel.hint_timer);
+                 panel.hint_timer = null;
+            }
+            panel.remove_hint();
         };
 
-        button.events.onInputOver.add(onOver.bind(this, slot, icon, m));
-        button.events.onInputOut.add(onOut.bind(this, slot, icon));
+        // onEffect = function (m) {
+        //     console.log("effects from slot: " + panel.effects[m]);
+        //     console.log(panel.effects);
+        //     console.log(m);
+        //     onEffectHint(panel.effects[m])
+        // };
+
+        slot.events.onInputOver.add(onOver.bind(this, slot, icon, m));
+        slot.events.onInputOut.add(onOut.bind(this, slot, icon));
+        // slot.events.onInputDown.add(onEffect.bind(this, m));
 
         panel.effect_slots.push(slot);
         panel.effect_icons.push(icon);
     }
+
+    // x = x_pos + 5 * field_size + field_size / 4;
+    // y = y_pos;
+    // var shifter = game.add.sprite(x + field_size / 2, y, 'shifter');
+    // shifter.anchor.set(0.5);
+    // shifter.inputEnabled = true;
+    //
+    // onOver = function (shifter, object, pointer) {
+    //     shifter.scale.setTo(1.2);
+    //     shifter.bringToTop();
+    // };
+    // onOut = function (shifter, object, pointer) {
+    //     shifter.scale.setTo(1);
+    //     shifter.sendToBack();
+    // };
+    //
+    // shifter.events.onInputOver.add(onOver.bind(this, shifter));
+    // shifter.events.onInputOut.add(onOut.bind(this, shifter));
+
 };
 
 panel.setForEntity = function(entity_id) {
@@ -173,11 +206,34 @@ panel.setForEntity = function(entity_id) {
             panel.entity_power_text.setText("");
         }
 
+        var effects = [];
+        for (var i = 0; i < entities_additional_effects.length; i++) {
+            if (entity_id == entities_additional_effects[i][0]) {
+                effects = entities_additional_effects[i][1];
+                break;
+            }
+        }
+        console.log("effects: " + effects);
+
+        for (var j = 0; j < panel.effect_icons.length; j++) {
+            panel.effect_icons[j].loadTexture('__default');
+        }
+        for (j = 0; j < effects.length; j++) {
+            panel.effect_icons[j].loadTexture(effects[j]);
+            panel.effects[j] = effects[j];
+        }
+
     } else {
         panel.entity_logo.loadTexture('__default');
         panel.entity_name_text.setText("");
         panel.entity_health_text.setText("");
         panel.entity_power_text.setText("");
+        panel.entity_logo.events.onInputDown.removeAll();
+
+        for (j = 0; j < panel.effect_icons.length; j++) {
+            panel.effect_icons[j].loadTexture('__default');
+            panel.effects[j] = "";
+        }
     }
 
     for (i = 0; i < panel.number_of_buttons; i++) {
