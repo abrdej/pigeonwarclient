@@ -127,7 +127,7 @@ MainGame.prototype = {
 
 function loadCompleted() {
     // main_client.connect();
-    client.connect(8080);
+    client.connect(443);
 }
 
 function onBoard(x, y) {
