@@ -320,7 +320,7 @@ sword_blow_handler = function (animation_data) {
 };
 
 dodge_handler = function (animation_data) {
-    return bitmap_flush_base_handler(animation_data, 'dodge', 150, true);
+    return bitmap_flush_base_handler(animation_data, 'samurai_dodge', 250, true);
 };
 
 claws_handler = function (animation_data) {

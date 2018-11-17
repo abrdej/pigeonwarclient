@@ -126,8 +126,8 @@ MainGame.prototype = {
 };
 
 function loadCompleted() {
-    // main_client.connect();
-    client.connect(443);
+    //main_client.connect();
+    client.connect(8080);
 }
 
 function onBoard(x, y) {

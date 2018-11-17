@@ -11,6 +11,7 @@ loadBitmaps = function () {
     game.load.image('shifter', 'res/shifter.png');
 
     game.load.image('Tree', 'res/tree.png');
+    game.load.image('Wall', 'res/wall.png');
     // game.load.image('Fir', 'res/fir.png');
     game.load.image('Fir', 'res/withered_pine.png');
     game.load.image('Saurian', 'res/saurian.png');
@@ -70,7 +71,8 @@ loadBitmaps = function () {
     game.load.image('sorcerer_attack', 'res/sorcerer_attack.png');
     game.load.image('sword_blow', 'res/sword_blow.png');
     game.load.image('samurai_sword_blow', 'res/samurai_sword_blow.png');
-    game.load.image('dodge', 'res/dodge.png');
+    game.load.image('dodge', 'res/rat.png');
+    game.load.image('samurai_dodge', 'res/samurai_small.png');
     game.load.image('poisoned_missile', 'res/poisoned_missile.png');
     game.load.image('poisoned_missile_explosion', 'res/poisoned_missile_explosion.png');
     game.load.image('spear', 'res/spear.png');
@@ -106,6 +108,9 @@ loadBitmaps = function () {
     // effects
     game.load.image('viewfinder', 'res/arrow.png');
     game.load.image('poisoning', 'res/poisoning.png');
+    game.load.image('power_bullet_effect', 'res/power_bullet.png');
+    game.load.image('spider_web_slow', 'res/spider_web.png');
+    game.load.image('hypnotised', 'res/hypnosis.png');
 
 
     game.load.onLoadComplete.add(loadCompleted, this);
