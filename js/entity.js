@@ -1,5 +1,12 @@
 var entities = {};
 
+var colors_for_players = {
+    0 : '#b3dbf6',
+    1 : '#ffd2c7',
+    2 : '#97a27a',
+    4294967295 : '#ffffff'
+};
+
 Entity = function (game, name, health, power, index) {
 
     this.name = name;
@@ -19,14 +26,18 @@ Entity = function (game, name, health, power, index) {
         this.text = game.make.text(0, -0.6 * field_size, " " + this.health + " ", style);
         this.text.anchor.set(0.5);
 
-        this.text_rect = game.make.graphics(0, 0);
-        this.text_rect.beginFill(0xFFFFFF);
+        this.color = '#ffffff';
+
+        var bmd = game.add.bitmapData(text_rect_width, text_rect_height);
+
+        bmd.ctx.beginPath();
+        bmd.ctx.rect(0, 0, text_rect_width, text_rect_height);
+        bmd.ctx.fillStyle = this.color;
+        bmd.ctx.alphe = 0.5;
+        bmd.ctx.fill();
+        this.text_rect = game.add.sprite(0, -2 * text_rect_height, bmd);
         this.text_rect.anchor.set(0.5);
         this.text_rect.alpha = 0.5;
-        this.text_rect.drawRect(-text_rect_width / 2, -2.5 * text_rect_height, text_rect_width, text_rect_height);
-
-        // game.world.bringToTop(this.text_rect);
-        // this.text.bringToTop();
 
         this.addChild(this.text_rect);
         this.addChild(this.text);
@@ -66,6 +77,19 @@ Entity.prototype.changeHealth = function (amount) {
     }
 };
 
+Entity.prototype.setColorForHealth = function (color) {
+    if (this.health !== int_max && this.color !== color) {
+        this.color = color;
+        var bmd = game.add.bitmapData(text_rect_width, text_rect_height);
+        bmd.ctx.beginPath();
+        bmd.ctx.rect(0, 0, text_rect_width, text_rect_height);
+        bmd.ctx.fillStyle = color;
+        bmd.ctx.alphe = 0.5;
+        bmd.ctx.fill();
+        this.text_rect.setTexture(bmd.texture);
+    }
+};
+
 Entity.prototype.changePower = function (amount) {
     this.power += amount;
 };
@@ -74,6 +98,10 @@ Entity.prototype.setPosition = function (index) {
     this.pos = index_to_pos(index);
     this.x = this.pos[0] * field_size + field_size / 2;
     this.y = this.pos[1] * field_size + field_size / 2;
+};
+
+Entity.prototype.setPlayer = function (player_id) {
+    this.setColorForHealth(colors_for_players[player_id]);
 };
 
 Entity.prototype.getName = function () {

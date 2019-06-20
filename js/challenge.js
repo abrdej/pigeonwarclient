@@ -1,12 +1,15 @@
-MapSelection = function(game) {
+ChallengeSelection = function(game) {
     this.game = game;
     this.holdicons = [];
-    this.challenges = ["Battlefield", "Dark Forest", "Winter Forest", "Siege"];
-    this.keys = ["battlefield", "dark_forest", "winter_forest", "siege"];
+    this.challenges = ["Saurian Web", "Wolves Dinner", "Dark Forest"];
+    this.keys = ["saurian_web", "wolves_dinner", "dark_forest"];
 };
 
-MapSelection.prototype = {
+ChallengeSelection.prototype = {
     preload: function() {
+        this.game.load.image('saurian_web', 'res/saurian.png');
+        this.game.load.image('wolves_dinner', 'res/wolf.png');
+        this.game.load.image('dark_forest', 'res/dark_forest.png');
         this.game.load.image('background', 'res/bg.jpg');
     },
     create: function() {
@@ -14,7 +17,7 @@ MapSelection.prototype = {
         this.game.stage.bg = this.game.add.tileSprite(0, 0, game.width, game.height, 'background');
 
         var style = {font: "32px Helvetica", fill: "#00000"};
-        this.game.add.text(120, 120, 'Select the map.', style);
+        this.game.add.text(120, 120, 'Select your challenge.', style);
 
         this.createLevelIcons();
         this.animateLevelIcons();
@@ -99,8 +102,7 @@ MapSelection.prototype = {
         }
     },
     onScenarioSelected: function(n) {
-        this.game.state.states['game']._scenario = "skirmish";
-        this.game.state.states['game']._map = this.keys[n];
+        this.game.state.states['game']._scenario = this.keys[n];
         this.state.start('game');
     }
 };

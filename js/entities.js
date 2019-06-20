@@ -35,6 +35,7 @@ loadBitmaps = function () {
     game.load.image('Wolf', 'res/wolf.png');
     game.load.image('Spectre', 'res/spectre.png');
     game.load.image('Pixie', 'res/pixie.png');
+    game.load.image('Killer', 'res/killer.png');
 
     game.load.image('Saurian Web', 'res/saurian_web.png');
 
@@ -104,6 +105,8 @@ loadBitmaps = function () {
     game.load.image('dark_forest', 'res/dark_forest.png');
     game.load.image('poke', 'res/poke.png');
     game.load.image('destroyer_attack', 'res/destroyer_attack.png');
+    game.load.image('kill', 'res/kill.png');
+    game.load.image('killer_jump', 'res/killer_jump.png');
 
     // effects
     game.load.image('viewfinder', 'res/arrow.png');
@@ -111,6 +114,9 @@ loadBitmaps = function () {
     game.load.image('power_bullet_effect', 'res/power_bullet.png');
     game.load.image('spider_web_slow', 'res/spider_web.png');
     game.load.image('hypnotised', 'res/hypnosis.png');
+
+    // background
+    game.load.image('background', 'res/bg.jpg');
 
 
     game.load.onLoadComplete.add(loadCompleted, this);

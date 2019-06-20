@@ -15,6 +15,7 @@ function index_to_pos(index) {
 MainGame = function(game) {
     this.game = game;
     this._scenario = "";
+    this._map = "";
 };
 
 MainGame.prototype = {
@@ -29,9 +30,9 @@ MainGame.prototype = {
         loadBitmaps();
     },
     update: function () {
-        console.log("update");
+        // console.log("update");
         if (is_animation_running) {
-            console.log("is_animation_running");
+            // console.log("is_animation_running");
         } else if (msg_queue.length !== 0) {
 
             console.log("msg queue");
@@ -88,6 +89,15 @@ MainGame.prototype = {
 
                 entities_additional_effects = global_state['entities_additional_effects'];
 
+                entities_players = global_state['entities_players'];
+                for (var i = 0; i < entities_players.length; i++) {
+                    var entity_id = entities_players[i][0];
+                    var player_id = entities_players[i][1];
+                    entities[entity_id].setPlayer(player_id);
+                    // console.log("Entity: " + entity_id + " has player: " + player_id);
+                }
+
+
                 // console.log(entities_additional_effects);
                 // if (entities_additional_effects) {
                 //     console.log(entities_additional_effects[0]);
@@ -126,8 +136,8 @@ MainGame.prototype = {
 };
 
 function loadCompleted() {
-    //main_client.connect();
-    client.connect(8080);
+    main_client.connect();
+    //client.connect(8080);
 }
 
 function onBoard(x, y) {

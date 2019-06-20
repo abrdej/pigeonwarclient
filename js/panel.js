@@ -26,14 +26,13 @@ panel.initialize = function (cols, rows, buttons_n) {
         button.sendToBack();
         button.inputEnabled = true;
         button.anchor.set(0.5);
-        button.events.onInputDown.add(onButton.bind(this, n));
 
         icon.anchor.set(0.5);
 
         var onOver = function (button, icon, n, object, pointer) {
             button.scale.setTo(1.2);
-            button.bringToTop();
             icon.scale.setTo(1.2);
+            button.bringToTop();
             icon.bringToTop();
             if (panel.hint_timer) {
                  clearTimeout(panel.hint_timer);
@@ -56,13 +55,15 @@ panel.initialize = function (cols, rows, buttons_n) {
 
         button.events.onInputOver.add(onOver.bind(this, button, icon, n));
         button.events.onInputOut.add(onOut.bind(this, button, icon));
+        button.events.onInputDown.add(onButton.bind(this, n));
+        button.events.onInputDown.add(onOut.bind(this, button, icon));
 
         panel.buttons.push(button);
         panel.icons.push(icon);
     }
 
 
-    end_turn_x = field_size * (cols - 1) - field_size / 4;;
+    end_turn_x = field_size * (cols - 1) - field_size / 4;
 
     panel.end_turn = game.add.sprite(end_turn_x, y_pos, 'EndTurn');
     panel.end_turn.sendToBack();
@@ -208,7 +209,7 @@ panel.setForEntity = function(entity_id) {
 
         var effects = [];
         for (var i = 0; i < entities_additional_effects.length; i++) {
-            if (entity_id == entities_additional_effects[i][0]) {
+            if (entity_id === entities_additional_effects[i][0]) {
                 effects = entities_additional_effects[i][1];
                 break;
             }
@@ -247,7 +248,7 @@ panel.setForEntity = function(entity_id) {
 
 panel.set_hint = function (hint) {
     panel.remove_hint();
-    if (hint !== "") {
+    if (hint !== "" && panel.hint_timer) {
         var style_for_hint = {
             font: "18px Helvetica", fill: "#FFFFFF", wordWrap:
                 true, wordWrapWidth: 0.7 * game.width, align: "center"

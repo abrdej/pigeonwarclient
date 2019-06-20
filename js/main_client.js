@@ -4,7 +4,8 @@ main_client.connect = function () {
     this.main_server_ws = new WebSocket('ws://localhost:8080/');
     this.main_server_ws.onopen = function open() {
         var scenario = game.state.states['game']._scenario;
-        var msg = '        ' + JSON.stringify({"scenario": scenario}) + '\n';
+        var map = game.state.states['game']._map;
+        var msg = '        ' + JSON.stringify({"scenario": scenario, "map": map}) + '\n';
         console.log(msg);
         this.send(msg);
     };

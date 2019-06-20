@@ -6,13 +6,13 @@ SelectScenario = function(game) {
 };
 
 SelectScenario.prototype = {
-    preload: function(){
+    preload: function() {
         this.game.load.image('saurian_web', 'res/saurian.png');
         this.game.load.image('wolves_dinner', 'res/wolf.png');
         this.game.load.image('dark_forest', 'res/dark_forest.png');
         this.game.load.image('skirmish', 'res/blow_the_ax.png');
     },
-    create: function(){
+    create: function() {
         this.game.stage.backgroundColor = 0x000000;
 
         var style = {font: "32px Helvetica", fill: "#FFFFFF"};

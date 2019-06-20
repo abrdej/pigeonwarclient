@@ -201,6 +201,10 @@ change_power_handler = function (animation_data) {
     var entity_id = animation_data[1];
     var change_amount = animation_data[2];
 
+    if (change_amount === 0) {
+        return;
+    }
+
     var entity = entities[entity_id];
 
     var color = "#1e71b4";
@@ -214,7 +218,7 @@ change_power_handler = function (animation_data) {
         entity.addChild(change_power);
     });
     change_power_tween.onComplete.add(function () {
-        entity.changeHealth(change_amount);
+        entity.changePower(change_amount);
         change_power.destroy();
         is_animation_running = false;
     });
@@ -390,6 +394,10 @@ cleaver_handler = function (animation_data) {
 
 poison_handler = function (animation_data) {
     return bitmap_flush_base_handler(animation_data, 'poison_effect', 150, false);
+};
+
+magic_suck_handler = function (animation_data) {
+    return bitmap_flush_base_handler(animation_data, 'magic_suck', 150, false);
 };
 
 power_bullet_handler = function (animation_data) {
@@ -611,6 +619,7 @@ animation.initialize = function () {
     animation.services['havoc'] = havoc_handler;
     animation.services['spectre_power_charging'] = function (animation_data) { };
     animation.services['poke'] = poke_handler;
+    animation.services['magic_suck'] = magic_suck_handler;
 };
 
 animation.handle = function (animation_data) {
