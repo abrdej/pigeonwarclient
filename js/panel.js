@@ -232,6 +232,7 @@ panel.setForEntity = function(entity_id) {
         }
         for (j = 0; j < effects.length; j++) {
             panel.effect_icons[j].loadTexture(effects[j]);
+
             panel.effects[j] = effects[j];
         }
 
@@ -251,6 +252,13 @@ panel.setForEntity = function(entity_id) {
     for (i = 0; i < panel.number_of_buttons; i++) {
         if (button_bitmaps[i] !== "") {
             panel.icons[i].loadTexture(button_bitmaps[i]);
+            if (!usable[i]) {
+                panel.icons[i].blendMode = 12;
+                panel.icons[i].tint = 0x424242;
+            } else {
+                panel.icons[i].blendMode = 0;
+                panel.icons[i].tint = 0xFFFFFF;
+            }
         } else {
             panel.icons[i].loadTexture('__default');
         }

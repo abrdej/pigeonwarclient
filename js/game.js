@@ -71,6 +71,7 @@ MainGame.prototype = {
                 selected_index = local_state['selected_index'];
                 actual_target_type = local_state['actual_target_type'];
                 button_bitmaps = local_state['button_bitmaps'];
+                usable = local_state['usable'];
                 selected_entity_name = local_state['entity_name'];
 
                 board.update_state();
@@ -136,8 +137,8 @@ MainGame.prototype = {
 };
 
 function loadCompleted() {
-    main_client.connect();
-    //client.connect(8080);
+    //main_client.connect();
+    client.connect(8080);
 }
 
 function onBoard(x, y) {

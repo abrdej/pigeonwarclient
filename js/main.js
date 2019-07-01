@@ -8,5 +8,5 @@ game.state.add('select_scenario', SelectScenario);
 game.state.add('map_selection', MapSelection);
 game.state.add('challenges', ChallengeSelection);
 game.state.add('game', MainGame);
-game.state.start('map_selection');
+game.state.start('game');
 
