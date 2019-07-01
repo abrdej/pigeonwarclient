@@ -111,61 +111,69 @@ panel.initialize = function (cols, rows, buttons_n) {
     panel.effect_slots = [];
     panel.effect_icons = [];
 
-    for (var m = 0; m < 3; m++) {
-        x = x_pos + (m + 6) * field_size + field_size / 4;
-        y = y_pos;
+    var n = 0;
+    for (var k = 0; k < 5; k++) {
+        for (var l = 0; l < 2; l++) {
+            var m = n++;
 
-        var slot = game.add.sprite(x + field_size / 2, y, 'Border');
-        icon = game.add.sprite(x + field_size / 2, y);
+            x = x_pos + 6 * field_size + k * field_size / 2 + field_size / 4;
+            y = y_pos - field_size / 4 + l * field_size / 2;
 
-        slot.sendToBack();
-        slot.inputEnabled = true;
-        slot.anchor.set(0.5);
-        // button.events.onInputDown.add(onButton.bind(this, n));
+            var slot = game.add.sprite(x + field_size / 2, y, 'Border');
+            icon = game.add.sprite(x + field_size / 2, y);
 
-        icon.anchor.set(0.5);
-
-        onOver = function (slot, icon, m, object, pointer) {
-            slot.scale.setTo(1.2);
-            slot.bringToTop();
-            icon.scale.setTo(1.2);
-            icon.bringToTop();
-
-            if (panel.hint_timer) {
-                clearTimeout(panel.hint_timer);
-                panel.hint_timer = null;
-            }
-            var onEffect = function (m) {
-                onEffectHint(panel.effects[m])
-            };
-            panel.hint_timer = window.setTimeout(onEffect.bind(this, m), 100);
-        };
-
-        onOut = function (slot, icon, object, pointer) {
-            slot.scale.setTo(1);
-            icon.scale.setTo(1);
-            icon.sendToBack();
             slot.sendToBack();
-            if (panel.hint_timer) {
-                 clearTimeout(panel.hint_timer);
-                 panel.hint_timer = null;
-            }
-            panel.remove_hint();
-        };
+            slot.inputEnabled = true;
+            slot.anchor.set(0.5);
+            // button.events.onInputDown.add(onButton.bind(this, n));
 
-        // onEffect = function (m) {
-        //     console.log("effects from slot: " + panel.effects[m]);
-        //     console.log(panel.effects);
-        //     console.log(m);
-        //     onEffectHint(panel.effects[m])
-        // };
+            icon.anchor.set(0.5);
 
-        slot.events.onInputOver.add(onOver.bind(this, slot, icon, m));
-        slot.events.onInputOut.add(onOut.bind(this, slot, icon));
-        // slot.events.onInputDown.add(onEffect.bind(this, m));
+            slot.scale.setTo(0.5);
+            icon.scale.setTo(0.5);
 
-        panel.effect_slots.push(slot);
-        panel.effect_icons.push(icon);
+            onOver = function (slot, icon, m, object, pointer) {
+                slot.scale.setTo(0.6);
+                slot.bringToTop();
+                icon.scale.setTo(0.6);
+                icon.bringToTop();
+
+                if (panel.hint_timer) {
+                    clearTimeout(panel.hint_timer);
+                    panel.hint_timer = null;
+                }
+                var onEffect = function (m) {
+                    onEffectHint(panel.effects[m])
+                };
+                panel.hint_timer = window.setTimeout(onEffect.bind(this, m), 100);
+            };
+
+            onOut = function (slot, icon, object, pointer) {
+                slot.scale.setTo(0.5);
+                icon.scale.setTo(0.5);
+                icon.sendToBack();
+                slot.sendToBack();
+                if (panel.hint_timer) {
+                    clearTimeout(panel.hint_timer);
+                    panel.hint_timer = null;
+                }
+                panel.remove_hint();
+            };
+
+            // onEffect = function (m) {
+            //     console.log("effects from slot: " + panel.effects[m]);
+            //     console.log(panel.effects);
+            //     console.log(m);
+            //     onEffectHint(panel.effects[m])
+            // };
+
+            slot.events.onInputOver.add(onOver.bind(this, slot, icon, m));
+            slot.events.onInputOut.add(onOut.bind(this, slot, icon));
+            // slot.events.onInputDown.add(onEffect.bind(this, m));
+
+            panel.effect_slots.push(slot);
+            panel.effect_icons.push(icon);
+        }
     }
 
     // x = x_pos + 5 * field_size + field_size / 4;
@@ -209,7 +217,10 @@ panel.setForEntity = function(entity_id) {
 
         var effects = [];
         for (var i = 0; i < entities_additional_effects.length; i++) {
-            if (entity_id === entities_additional_effects[i][0]) {
+
+            console.log("effects iter: " + entities_additional_effects[i][0]);
+
+            if (entity_id == entities_additional_effects[i][0]) {
                 effects = entities_additional_effects[i][1];
                 break;
             }
