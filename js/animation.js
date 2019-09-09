@@ -576,6 +576,275 @@ spider_web_handler = function (animation_data) {
     web_tween.start();
 };
 
+eye_shoot_handler = function (animation_data) {
+    return shoot_base_handler(animation_data, 'power_bullet');
+};
+
+eye_shoot_to_sides_handler = function (animation_data) {
+
+    var from_index = animation_data[1];
+    var sides_indexes = animation_data[2];
+
+    console.log(sides_indexes);
+
+    var from_pos = index_to_pos(from_index);
+    var to_pos1 = index_to_pos(sides_indexes[0]);
+    var to_pos2 = index_to_pos(sides_indexes[1]);
+
+    var distance1 = motion_distance(from_pos, to_pos1);
+    var distance2 = motion_distance(from_pos, to_pos2);
+
+    console.log(from_pos);
+
+    from_pos = pos_to_real_dimensions(from_pos);
+    to_pos1 = pos_to_real_dimensions(to_pos1);
+    to_pos2 = pos_to_real_dimensions(to_pos2);
+
+    var bullet1 = game.add.sprite(from_pos['x'], from_pos['y'], 'power_bullet');
+    bullet1.anchor.set(0.5);
+
+    if (from_pos[0] - to_pos1[0] > 0) {
+        bullet1.scale.x = -1;
+    } else {
+        bullet1.scale.x = 1;
+    }
+
+    var tween1 = game.add.tween(bullet1).to(to_pos1, motion_speed_slow(distance1), Phaser.Easing.Linear.None);
+
+    var bullet2 = game.add.sprite(from_pos['x'], from_pos['y'], 'power_bullet');
+    bullet2.anchor.set(0.5);
+
+    if (from_pos[0] - to_pos2[0] > 0) {
+        bullet2.scale.x = -1;
+    } else {
+        bullet2.scale.x = 1;
+    }
+
+    var tween2 = game.add.tween(bullet2).to(to_pos2, motion_speed_slow(distance2), Phaser.Easing.Linear.None);
+
+    tween1.onComplete.add(function () {
+        bullet1.destroy();
+        if (distance1 > distance2) {
+            is_animation_running = false;
+        }
+    });
+
+    tween2.onComplete.add(function () {
+        bullet2.destroy();
+        if (distance2 >= distance1) {
+            is_animation_running = false;
+        }
+    });
+
+    tween1.start();
+    tween2.start();
+    is_animation_running = true;
+};
+
+transmission_handler = function (animation_data) {
+    var from_index = animation_data[1];
+    var to_index = animation_data[2];
+
+    var entity_id = entity_at(from_index);
+    var entity_sprite = entities[entity_id];
+
+    var tween = game.add.tween(entity_sprite).to({ alpha: 0 }, 250, Phaser.Easing.Linear.None);
+
+    entity_sprite.bringToTop();
+    entity_sprite.pos = index_to_pos(to_index);
+
+    tween.onComplete.add(function () {
+        var tween2 = game.add.tween(entity_sprite).to({ alpha: 1 }, 250, Phaser.Easing.Linear.None);
+        tween2.onComplete.add(function () {
+            is_animation_running = false;
+        });
+        entity_sprite.position = pos_to_real_dimensions(entity_sprite.pos);
+        tween2.start();
+    });
+
+    tween.start();
+    is_animation_running = true;
+};
+
+charge_handler = function (animation_data) {
+    return move_and_return_base_handler(animation_data, true, "move_charge", "reaper_attack");
+};
+
+talons_handler = function (animation_data) {
+    return move_and_return_base_handler(animation_data, false);
+};
+
+stamp_handler = function (animation_data) {
+    return move_and_return_base_handler(animation_data, false);
+};
+
+trash_trail_handler = function (animation_data) {
+    return bitmap_flush_base_handler(animation_data, 'trash_trail', 150, false);
+};
+
+lightning_prepare_handler = function (animation_data) {
+    return bitmap_flush_base_handler(animation_data, 'lightning_prepare', 150, false);
+};
+
+lightning_handler = function (animation_data) {
+    return bitmap_flush_base_handler(animation_data, 'lightning', 150, false);
+};
+
+cure_handler = function (animation_data) {
+    return bitmap_flush_base_handler(animation_data, 'cure_splash.png', 150, false);
+};
+
+portal_handler = function (animation_data) {
+    var from_index = animation_data[1];
+    var to_index = animation_data[2];
+    var neighboring_moves = animation_data[3];
+
+    var entity_id = entity_at(from_index);
+    var entity_sprite = entities[entity_id];
+
+    var taken = [];
+    for (var i = 0; i < neighboring_moves.length; i++) {
+        var taked_entity_id = entity_at(neighboring_moves[i][0]);
+        var neighboring_sprite = entities[taked_entity_id];
+        taken.push([taked_entity_id, neighboring_moves[i][1]]);
+
+        neighboring_sprite.pos = index_to_pos(neighboring_moves[i][1]);
+    }
+
+    // var from_pos = entity_sprite.pos;
+    var from_pos = pos_to_real_dimensions(entity_sprite.pos);
+
+    var portal = game.add.sprite(from_pos['x'], from_pos['y'], 'portal_1');
+    portal.anchor.set(0.5);
+
+    entity_sprite.bringToTop();
+    entity_sprite.pos = index_to_pos(to_index);
+
+    var portal_tween_1 = game.add.tween(portal).to({y: '0'}, 100, Phaser.Easing.Linear.None);
+    var portal_tween_2 = game.add.tween(portal).to({y: '0'}, 100, Phaser.Easing.Linear.None);
+    var portal_tween_3 = game.add.tween(portal).to({y: '0'}, 100, Phaser.Easing.Linear.None);
+    var portal_tween_4 = game.add.tween(portal).to({y: '0'}, 100, Phaser.Easing.Linear.None);
+    var portal_tween_5 = game.add.tween(portal).to({y: '0'}, 100, Phaser.Easing.Linear.None);
+    var portal_tween_6 = game.add.tween(portal).to({y: '0'}, 100, Phaser.Easing.Linear.None);
+
+    portal_tween_1.onStart.add(function () {
+        portal.loadTexture("portal_1");
+    });
+    portal_tween_2.onStart.add(function () {
+        portal.loadTexture("portal_2");
+    });
+    portal_tween_3.onStart.add(function () {
+        portal.loadTexture("portal_3");
+    });
+    portal_tween_3.onComplete.add(function () {
+        entity_sprite.visible = false;
+        entity_sprite.position = pos_to_real_dimensions(entity_sprite.pos);
+        portal.position = pos_to_real_dimensions(entity_sprite.pos);
+
+        for (var i = 0; i < taken.length; i++) {
+            var neighboring_sprite = entities[taken[i][0]];
+            neighboring_sprite.visible = false;
+            neighboring_sprite.position = pos_to_real_dimensions(neighboring_sprite.pos);
+        }
+    });
+
+    portal_tween_4.onStart.add(function () {
+        portal.loadTexture("portal_3");
+    });
+    portal_tween_5.onStart.add(function () {
+        portal.loadTexture("portal_2");
+    });
+    portal_tween_6.onStart.add(function () {
+        portal.loadTexture("portal_1");
+    });
+    portal_tween_6.onComplete.add(function () {
+
+        entity_sprite.visible = true;
+
+        for (var i = 0; i < taken.length; i++) {
+            var neighboring_sprite = entities[taken[i][0]];
+            neighboring_sprite.visible = true;
+        }
+
+        portal.destroy();
+
+        console.log("destroy");
+
+        is_animation_running = false;
+    });
+
+    portal_tween_1.chain(portal_tween_2);
+    portal_tween_2.chain(portal_tween_3);
+    portal_tween_3.chain(portal_tween_4);
+    portal_tween_4.chain(portal_tween_5);
+    portal_tween_5.chain(portal_tween_6);
+    is_animation_running = true;
+    portal_tween_1.start();
+};
+
+smokescreen_handler = function (animation_data) {
+    // return shoot_base_handler(animation_data, 'smokescreen', 'smokescreen_explode2');
+    var from_index = animation_data[1];
+    var to_index = animation_data[2];
+
+    var from_pos = index_to_pos(from_index);
+    var to_pos = index_to_pos(to_index);
+
+    var distance = motion_distance(from_pos, to_pos);
+
+    var start_x = from_pos[0] * field_size + field_size / 2;
+    var start_y = from_pos[1] * field_size + field_size / 2;
+
+    var end_x = to_pos[0] * field_size + field_size / 2;
+    var end_y = to_pos[1] * field_size + field_size / 2;
+
+    var bullet = game.add.sprite(start_x, start_y, 'smokescreen');
+    bullet.anchor.set(0.5);
+
+    if (from_pos[0] - to_pos[0] > 0) {
+        bullet.scale.x = -1;
+    } else {
+        bullet.scale.x = 1;
+    }
+
+    var bullet_tween = game.add.tween(bullet).to(pos_to_real_dimensions(to_pos), motion_speed_medium(distance),
+        Phaser.Easing.Linear.None);
+    bullet_tween.onComplete.add(function () {
+        bullet.destroy();
+
+        var explosion = game.add.sprite(end_x, end_y, 'smokescreen_explode1');
+        explosion.anchor.set(0.5);
+        explosion.scale.x = 0.8;
+        explosion.scale.y = 0.8;
+
+        var explosion_tween_1 = game.add.tween(explosion).to({y: '0'}, 100, Phaser.Easing.Linear.None);
+        var explosion_tween_2 = game.add.tween(explosion).to({y: '0'}, 150, Phaser.Easing.Linear.None);
+        var explosion_tween_3 = game.add.tween(explosion).to({y: '0'}, 200, Phaser.Easing.Linear.None);
+
+        explosion_tween_1.onStart.add(function () {
+            explosion.loadTexture("smokescreen_explode1");
+        });
+        explosion_tween_2.onStart.add(function () {
+            explosion.loadTexture("smokescreen_explode2");
+        });
+        explosion_tween_3.onStart.add(function () {
+            explosion.loadTexture("smokescreen_explode3");
+        });
+
+        explosion_tween_1.chain(explosion_tween_2);
+        explosion_tween_2.chain(explosion_tween_3);
+
+        explosion_tween_3.onComplete.add(function () {
+            explosion.destroy();
+        });
+
+        explosion_tween_1.start();
+        is_animation_running = false;
+    });
+    is_animation_running = true;
+    bullet_tween.start();
+};
+
 animation.initialize = function () {
     animation.services = {};
     animation.services['move'] = move_handler;
@@ -620,6 +889,20 @@ animation.initialize = function () {
     animation.services['spectre_power_charging'] = function (animation_data) { };
     animation.services['poke'] = poke_handler;
     animation.services['magic_suck'] = magic_suck_handler;
+    animation.services['fast_draw'] = shoot_handler;
+    animation.services['revolver'] = shoot_handler;
+    animation.services['eye_shoot'] = eye_shoot_handler;
+    animation.services['eye_shoot_to_sides'] = eye_shoot_to_sides_handler;
+    animation.services['transmission'] = transmission_handler;
+    animation.services['charge'] = charge_handler;
+    animation.services['smokescreen'] = smokescreen_handler;
+    animation.services['talons'] = talons_handler;
+    animation.services['trash_trail'] = trash_trail_handler;
+    animation.services['stamp'] = stamp_handler;
+    animation.services['lightning_prepare'] = lightning_prepare_handler;
+    animation.services['lightning'] = lightning_handler;
+    animation.services['cure'] = cure_handler;
+    animation.services['portal'] = portal_handler;
 };
 
 animation.handle = function (animation_data) {

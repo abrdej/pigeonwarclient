@@ -12,6 +12,8 @@ loadBitmaps = function () {
 
     game.load.image('Tree', 'res/tree.png');
     game.load.image('Wall', 'res/wall.png');
+    game.load.image('Water', 'res/water.png');
+
     // game.load.image('Fir', 'res/fir.png');
     game.load.image('Fir', 'res/withered_pine.png');
     game.load.image('Saurian', 'res/saurian.png');
@@ -36,6 +38,14 @@ loadBitmaps = function () {
     game.load.image('Spectre', 'res/spectre.png');
     game.load.image('Pixie', 'res/pixie.png');
     game.load.image('Killer', 'res/killer.png');
+    game.load.image('Snake', 'res/snake.png');
+    game.load.image('Druid', 'res/druid.png');
+    game.load.image('Eye', 'res/eye.png');
+    game.load.image('Soul Hunter', 'res/soul_hunter.png');
+    game.load.image('Wizzard', 'res/wizzard.png');
+    game.load.image('Reaper', 'res/reaper.png');
+    game.load.image('Trailer', 'res/trailer.png');
+    game.load.image('Sentinel', 'res/sentinel.png');
 
     game.load.image('Saurian Web', 'res/saurian_web.png');
 
@@ -107,6 +117,31 @@ loadBitmaps = function () {
     game.load.image('destroyer_attack', 'res/destroyer_attack.png');
     game.load.image('kill', 'res/kill.png');
     game.load.image('killer_jump', 'res/killer_jump.png');
+    game.load.image('eye_shoot', 'res/eye_shoot.png');
+    game.load.image('transmission', 'res/transmission.png');
+    game.load.image('meteorite', 'res/meteorite.png');
+    game.load.image('purification', 'res/purification.png');
+    game.load.image('charge', 'res/charge.png');
+    game.load.image('lightning_prepare', 'res/lightning_prepare.png');
+    game.load.image('lightning', 'res/lightning.png');
+    game.load.image('cure', 'res/cure.png');
+    game.load.image('cure_splash', 'res/cure_splash.png');
+    game.load.image('portal', 'res/portal.png');
+    game.load.image('move_charge', 'res/move_charge.png');
+    game.load.image('reaper_attack', 'res/reaper_attack.png');
+    game.load.image('smokescreen', 'res/smokescreen.png');
+    game.load.image('smokescreen_explode1', 'res/smokescreen_explode1.png');
+    game.load.image('smokescreen_explode2', 'res/smokescreen_explode2.png');
+    game.load.image('smokescreen_explode3', 'res/smokescreen_explode3.png');
+    game.load.image('portal_1', 'res/portal_1.png');
+    game.load.image('portal_2', 'res/portal_2.png');
+    game.load.image('portal_3', 'res/portal_3.png');
+
+    game.load.image('fast_draw', 'res/bullet.png');
+    game.load.image('revolver', 'res/bullet.png');
+    game.load.image('talons', 'res/talons.png');
+    game.load.image('trash_trail', 'res/death_trail.png');
+    game.load.image('stamp', 'res/stamp.png');
 
     // effects
     game.load.image('viewfinder', 'res/arrow.png');
@@ -114,6 +149,7 @@ loadBitmaps = function () {
     game.load.image('power_bullet_effect', 'res/power_bullet.png');
     game.load.image('spider_web_slow', 'res/spider_web.png');
     game.load.image('hypnotised', 'res/hypnosis.png');
+    game.load.image('sparks_effect', 'res/sparks.png');
 
     // background
     game.load.image('background', 'res/bg.jpg');
