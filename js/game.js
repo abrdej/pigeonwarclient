@@ -80,14 +80,6 @@ MainGame.prototype = {
             } else if (json_data.hasOwnProperty('game_state')) {
                 var global_state = json_data['game_state'];
 
-                // update_positions(global_state['board']);
-                // update_healths(global_state['healths']);
-
-                // board_container board;
-                // std::unordered_map<std::uint32_t, std::int32_t> healths;
-                // std::unordered_map<std::uint32_t, std::string> entities_names;
-                // std::unordered_map<std::uint32_t, std::vector<std::string>> entities_additional_effects;
-
                 entities_additional_effects = global_state['entities_additional_effects'];
 
                 entities_players = global_state['entities_players'];
@@ -97,15 +89,6 @@ MainGame.prototype = {
                     entities[entity_id].setPlayer(player_id);
                     // console.log("Entity: " + entity_id + " has player: " + player_id);
                 }
-
-
-                // console.log(entities_additional_effects);
-                // if (entities_additional_effects) {
-                //     console.log(entities_additional_effects[0]);
-                // }
-
-
-
 
             } else if (json_data.hasOwnProperty("animation")) {
                 animation.handle(json_data["animation"]);
@@ -130,6 +113,12 @@ MainGame.prototype = {
                 var from_index = json_data["from_index"];
                 var to_index = json_data["to_index"];
                 entities[entity_id_to_move].setPosition(to_index);
+
+            } else if (json_data.hasOwnProperty("move_entity")) {
+                var entity_id_to_move = json_data["move_entity"];
+                var from_index = json_data["from_index"];
+                var to_index = json_data["to_index"];
+                entities[entity_id_to_move].setPosition(to_index);
             }
         }
     },
@@ -138,7 +127,7 @@ MainGame.prototype = {
 
 function loadCompleted() {
     //main_client.connect();
-    client.connect(8080);
+    client.connect(60000);
 }
 
 function onBoard(x, y) {

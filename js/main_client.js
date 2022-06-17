@@ -1,7 +1,7 @@
 var main_client = {};
 
 main_client.connect = function () {
-    this.main_server_ws = new WebSocket('ws://localhost:8080/');
+    this.main_server_ws = new WebSocket('ws://localhost:60003/');
     this.main_server_ws.onopen = function open() {
         var scenario = game.state.states['game']._scenario;
         var map = game.state.states['game']._map;
