@@ -163,7 +163,6 @@ update_for_entity = function () {
     console.log("entity_id:" + entity_id);
 
     if (entity_id !== no_entity_id) {
-
         panel.setForEntity(entity_id);
     }
 };

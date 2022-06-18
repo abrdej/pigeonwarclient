@@ -114,11 +114,22 @@ MainGame.prototype = {
                 var to_index = json_data["to_index"];
                 entities[entity_id_to_move].setPosition(to_index);
 
-            } else if (json_data.hasOwnProperty("move_entity")) {
-                var entity_id_to_move = json_data["move_entity"];
-                var from_index = json_data["from_index"];
-                var to_index = json_data["to_index"];
-                entities[entity_id_to_move].setPosition(to_index);
+            } else if (json_data.hasOwnProperty("entity_talk")) {
+                var entity_index = json_data["entity_talk"];
+                var text = json_data["text"];
+                panel.show_text(text)
+                selected_index = entity_index
+                update_for_entity()
+                board.update_state();
+                is_animation_running = true
+
+            } else if (json_data.hasOwnProperty("defeat")) {
+                panel.show_text("DEFEAT!!!")
+                is_animation_running = true
+
+            } else if (json_data.hasOwnProperty("victory")) {
+                panel.show_text("VICTORY!!!")
+                is_animation_running = true
             }
         }
     },

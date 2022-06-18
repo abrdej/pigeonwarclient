@@ -2,6 +2,8 @@ var panel = {};
 
 panel.hint_text = null;
 panel.hint_rect = null;
+panel.text = null;
+panel.text_rect = null;
 
 panel.effects = [];
 
@@ -275,7 +277,7 @@ panel.set_hint = function (hint) {
         panel.hint_text = game.add.text(game.world.centerX, game.world.centerX, hint, style_for_hint);
         panel.hint_text.anchor.set(0.5);
 
-        var text_height = panel.hint_text.height + 10;
+        var text_height = panel.hint_text.height * 3;
 
         console.log("text_height: " + text_height);
 
@@ -297,4 +299,43 @@ panel.remove_hint = function () {
         panel.hint_rect.destroy();
         panel.hint_rect = null;
     }
+};
+
+panel.show_text = function (text) {
+    panel.remove_text();
+    if (text !== "") {
+        var style_for_text = {
+            font: "18px Helvetica", fill: "#FFFFFF", wordWrap:
+                true, wordWrapWidth: 0.7 * game.width, align: "center"
+        };
+        panel.text = game.add.text(game.world.centerX, game.world.centerX, text, style_for_text);
+        panel.text.anchor.set(0.5);
+
+        var text_height = panel.text.height * 3;
+
+        console.log("text_height: " + text_height);
+
+        panel.text_rect = game.add.graphics(game.world.centerX, game.world.centerX);
+        panel.text_rect.beginFill(0x000000);
+        panel.text_rect.anchor.set(0.5);
+        panel.text_rect.drawRect(-(0.75 * game.width) / 2, -text_height / 2, 0.75 * game.width, text_height);
+
+        panel.text.bringToTop();
+    }
+    var removeText = function () {
+        panel.remove_text()
+    };
+    panel.text_timer = window.setTimeout(removeText.bind(this), 4000);
+}
+
+panel.remove_text = function () {
+    if (panel.text) {
+        panel.text.destroy();
+        panel.text = null;
+    }
+    if (panel.text_rect) {
+        panel.text_rect.destroy();
+        panel.text_rect = null;
+    }
+    is_animation_running = false
 };
