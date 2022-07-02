@@ -137,13 +137,14 @@ MainGame.prototype = {
 };
 
 function loadCompleted() {
-    //main_client.connect();
+    // change between lobby_client and client
+    // lobby_client.connect();
     client.connect(60000);
 }
 
 function onBoard(x, y) {
 
-    var msg = '        ' + JSON.stringify({
+    var msg = JSON.stringify({
         on_board: {
             client_id: client_id,
             col: x,
@@ -156,7 +157,7 @@ function onBoard(x, y) {
 }
 
 function onButton(n) {
-    var msg = '        ' + JSON.stringify({
+    var msg = JSON.stringify({
         on_button: {
             client_id: client_id,
             button: n
@@ -168,7 +169,7 @@ function onButton(n) {
 }
 
 function onGetHint(n) {
-    var msg = '        ' + JSON.stringify({
+    var msg = JSON.stringify({
         get_button_description: {
             client_id: client_id,
             button: n
@@ -179,7 +180,7 @@ function onGetHint(n) {
 }
 
 function onEffectHint(effect_key) {
-    var msg = '        ' + JSON.stringify({
+    var msg = JSON.stringify({
         get_effect_description: {
             client_id: client_id,
             effect: effect_key
