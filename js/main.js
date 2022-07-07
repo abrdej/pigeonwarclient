@@ -4,9 +4,9 @@ var board_rows = 10;
 
 var game = new Phaser.Game(board_cols * field_size, (board_rows + 2) * field_size, Phaser.CANVAS, 'PigeonWar');
 
+game.state.add('main_menu', MainMenu);
 game.state.add('select_scenario', SelectScenario);
 game.state.add('map_selection', MapSelection);
 game.state.add('challenges', ChallengeSelection);
 game.state.add('game', MainGame);
-game.state.start('select_scenario');
-
+game.state.start('main_menu');
