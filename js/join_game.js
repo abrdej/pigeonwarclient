@@ -1,15 +1,14 @@
-MainMenu = function(game) {
+JoinGame = function(game) {
     this.game = game;
     this.buttons = [];
-    this.keys = ["join_game", "create_game", "play_scenario"];
+    this.keys = ['quick_game', 'main_menu'];
 };
 
-MainMenu.prototype = {
+JoinGame.prototype = {
     preload: function() {
         this.game.load.image('background', 'res/bg4.jpg');
-        this.game.load.image('join_game', 'res/button_join_game.png');
-        this.game.load.image('create_game', 'res/button_make_game.png');
-        this.game.load.image('play_scenario', 'res/button_play_scenario.png');
+        this.game.load.image('quick_game', 'res/button_quick_game.png');
+        this.game.load.image('main_menu', 'res/button_back.png');
     },
     create: function() {
         this.add.image(0, 0, "background");
@@ -43,6 +42,11 @@ MainMenu.prototype = {
         }
     },
     onChoiceSelected: function(button) {
-        this.state.start(button.name);
+        if (button.name ==='quick_game') {
+            this.state.states["game"]._scenario = button.name
+            this.state.start("game");
+        } else {
+            this.state.start(button.name);
+        }
     }
 };
