@@ -36,7 +36,7 @@ MainGame.prototype = {
     update: function () {
         // console.log("update");
         if (!this._waiting_for_players && this._number_of_players !== 1 && !this._game_ready) {
-            panel.show_text('Waiting for players');
+            panel.show_text('Waiting for players...');
             this._waiting_for_players = true;
 
         } else if (this._waiting_for_players && this._game_ready) {
@@ -44,7 +44,7 @@ MainGame.prototype = {
             this._waiting_for_players = false;
 
         } else if (!this._waiting_for_players && this._number_of_players === 1 && !this._game_ready) {
-            panel.show_text('Initializing');
+            panel.show_text('Loading...');
             this._waiting_for_players = true;
 
         } else if (is_animation_running) {
