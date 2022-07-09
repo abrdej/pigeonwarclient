@@ -12,13 +12,14 @@ function makeID(length) {
 CreateGame = function(game) {
     this.game = game;
     this.buttons = [];
+    this.button_texts = ["Back"];
     this.keys = ['main_menu'];
 };
 
 CreateGame.prototype = {
     preload: function() {
         this.game.load.image('background', 'res/bg4.jpg');
-        this.game.load.image('main_menu', 'res/button_back.png');
+        this.game.load.image('main_menu', 'res/button_180.png');
         this.game.load.image('text_box', 'res/text_box.png');
     },
     create: function() {
@@ -78,15 +79,21 @@ CreateGame.prototype = {
             this.buttons[n].name = this.keys[n];
             this.buttons[n].anchor.setTo(0.5, 0.5);
 
-            var onOver = function (object) {
-                object.scale.setTo(1.2);
+            style = {font: "32px STIXIntegralsSm", fill: "#262020", fontWeight: "bold"};
+            var button_text = this.game.add.text(x_pos, y_pos, this.button_texts[n], style);
+            button_text.anchor.setTo(0.5, 0.5);
+
+            var onOver = function (text, button) {
+                text.scale.setTo(1.1);
+                button.scale.setTo(1.1);
             };
-            var onOut = function (object) {
-                object.scale.setTo(1);
+            var onOut = function (text, button) {
+                text.scale.setTo(1);
+                button.scale.setTo(1);
             };
 
-            this.buttons[n].onInputOver.add(onOver, this);
-            this.buttons[n].onInputOut.add(onOut, this);
+            this.buttons[n].onInputOver.add(onOver.bind(this, button_text, this.buttons[n]), this);
+            this.buttons[n].onInputOut.add(onOut.bind(this, button_text, this.buttons[n]), this);
         }
     },
     onChoiceSelected: function(button) {

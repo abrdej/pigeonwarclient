@@ -1,15 +1,15 @@
 PlayScenario = function(game) {
     this.game = game;
     this.buttons = [];
-    this.scenarios = ['Saurian Web'];
-    this.keys = ['saurian_web',  'main_menu'];
+    this.button_texts = ['Saurian Web', "Wolf's Night", 'Back'];
+    this.keys = ['saurian_web', 'wolfs_night', 'main_menu'];
 };
 
 PlayScenario.prototype = {
     preload: function() {
         this.game.load.image('background', 'res/bg4.jpg');
-        this.game.load.image('button_scenario', 'res/button_scenario.png');
-        this.game.load.image('main_menu', 'res/button_back.png');
+        this.game.load.image('button_scenario', 'res/button_240.png');
+        this.game.load.image('main_menu', 'res/button_180.png');
     },
     create: function() {
         this.add.image(0, 0, "background");
@@ -39,8 +39,8 @@ PlayScenario.prototype = {
             this.buttons[n].anchor.setTo(0.5, 0.5);
 
             style = {font: "32px STIXIntegralsSm", fill: "#262020", fontWeight: "bold"};
-            var scenarios_text = this.game.add.text(x_pos, y_pos, this.scenarios[n], style);
-            scenarios_text.anchor.setTo(0.5, 0.5);
+            var button_text = this.game.add.text(x_pos, y_pos, this.button_texts[n], style);
+            button_text.anchor.setTo(0.5, 0.5);
 
             var onOver = function (text, button) {
                 text.scale.setTo(1.1);
@@ -51,8 +51,8 @@ PlayScenario.prototype = {
                 button.scale.setTo(1);
             };
 
-            this.buttons[n].onInputOver.add(onOver.bind(this, scenarios_text, this.buttons[n]), this);
-            this.buttons[n].onInputOut.add(onOut.bind(this, scenarios_text, this.buttons[n]), this);
+            this.buttons[n].onInputOver.add(onOver.bind(this, button_text, this.buttons[n]), this);
+            this.buttons[n].onInputOut.add(onOut.bind(this, button_text, this.buttons[n]), this);
         }
     },
     onChoiceSelected: function(button) {

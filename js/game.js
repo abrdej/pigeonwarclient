@@ -93,6 +93,17 @@ MainGame.prototype = {
             } else if (json_data.hasOwnProperty("animation")) {
                 animation.handle(json_data["animation"]);
 
+            } else if (json_data.hasOwnProperty("create_entity")) {
+                var entity_id = json_data["create_entity"];
+                var entity_health = json_data["health"];
+                var entity_index = json_data["index"];
+                var entity_name = json_data["name"];
+                var entity_power = json_data["power"];
+
+                entities[entity_id] =
+                    new Entity(game, entity_name, entity_health, entity_power, entity_index);
+
+
             } else if (json_data.hasOwnProperty("remove_entity")) {
                 var entity_to_remove = json_data["remove_entity"];
                 entities[entity_to_remove].destroy();

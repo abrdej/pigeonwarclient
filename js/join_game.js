@@ -1,14 +1,15 @@
 JoinGame = function(game) {
     this.game = game;
     this.buttons = [];
-    this.keys = ['quick_game', 'main_menu'];
+    this.button_texts = ["Skirmish", "Back"];
+    this.keys = ['skirmish', 'main_menu'];
 };
 
 JoinGame.prototype = {
     preload: function() {
         this.game.load.image('background', 'res/bg4.jpg');
-        this.game.load.image('quick_game', 'res/button_quick_game.png');
-        this.game.load.image('main_menu', 'res/button_back.png');
+        this.game.load.image('skirmish', 'res/button_240.png');
+        this.game.load.image('main_menu', 'res/button_180.png');
     },
     create: function() {
         this.add.image(0, 0, "background");
@@ -30,19 +31,25 @@ JoinGame.prototype = {
             this.buttons[n].name = this.keys[n];
             this.buttons[n].anchor.setTo(0.5, 0.5);
 
-            var onOver = function (object) {
-                object.scale.setTo(1.2);
+            style = {font: "32px STIXIntegralsSm", fill: "#262020", fontWeight: "bold"};
+            var button_text = this.game.add.text(x_pos, y_pos, this.button_texts[n], style);
+            button_text.anchor.setTo(0.5, 0.5);
+
+            var onOver = function (text, button) {
+                text.scale.setTo(1.1);
+                button.scale.setTo(1.1);
             };
-            var onOut = function (object) {
-                object.scale.setTo(1);
+            var onOut = function (text, button) {
+                text.scale.setTo(1);
+                button.scale.setTo(1);
             };
 
-            this.buttons[n].onInputOver.add(onOver, this);
-            this.buttons[n].onInputOut.add(onOut, this);
+            this.buttons[n].onInputOver.add(onOver.bind(this, button_text, this.buttons[n]), this);
+            this.buttons[n].onInputOut.add(onOut.bind(this, button_text, this.buttons[n]), this);
         }
     },
     onChoiceSelected: function(button) {
-        if (button.name ==='quick_game') {
+        if (button.name ==='skirmish') {
             this.state.states["game"]._scenario = button.name
             this.state.start("game");
         } else {
