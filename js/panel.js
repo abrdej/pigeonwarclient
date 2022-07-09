@@ -301,6 +301,14 @@ panel.remove_hint = function () {
     }
 };
 
+panel.show_talk = function (text) {
+    panel.show_text(text)
+    var removeText = function () {
+        panel.remove_text()
+    };
+    panel.text_timer = window.setTimeout(removeText.bind(this), 4000);
+}
+
 panel.show_text = function (text) {
     panel.remove_text();
     if (text !== "") {
@@ -322,10 +330,6 @@ panel.show_text = function (text) {
 
         panel.text.bringToTop();
     }
-    var removeText = function () {
-        panel.remove_text()
-    };
-    panel.text_timer = window.setTimeout(removeText.bind(this), 4000);
 }
 
 panel.remove_text = function () {

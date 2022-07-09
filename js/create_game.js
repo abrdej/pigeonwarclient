@@ -34,7 +34,7 @@ CreateGame.prototype = {
     initProgressData: function() {
     },
     createGameHash: function () {
-        this.game_hash = makeID(14);
+        this.game_hash = makeID(12);
 
         var style = {font: "28px STIXIntegralsSm", fill: "#921b1b", fontWeight: "bold",
             backgroundColor: '#b7b4aa' };

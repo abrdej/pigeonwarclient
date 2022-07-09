@@ -14,8 +14,12 @@ function index_to_pos(index) {
 
 MainGame = function(game) {
     this.game = game;
+    this._game_hash = "";
     this._scenario = "";
     this._map = "";
+    this._number_of_players = 2;
+    this._waiting_for_players = false;
+    this._game_ready = false;
 };
 
 MainGame.prototype = {
@@ -31,7 +35,19 @@ MainGame.prototype = {
     },
     update: function () {
         // console.log("update");
-        if (is_animation_running) {
+        if (!this._waiting_for_players && this._number_of_players !== 1 && !this._game_ready) {
+            panel.show_text('Waiting for players');
+            this._waiting_for_players = true;
+
+        } else if (this._waiting_for_players && this._game_ready) {
+            panel.remove_text();
+            this._waiting_for_players = false;
+
+        } else if (!this._waiting_for_players && this._number_of_players === 1 && !this._game_ready) {
+            panel.show_text('Initializing');
+            this._waiting_for_players = true;
+
+        } else if (is_animation_running) {
             // console.log("is_animation_running");
         } else if (msg_queue.length !== 0) {
 
@@ -128,7 +144,7 @@ MainGame.prototype = {
             } else if (json_data.hasOwnProperty("entity_talk")) {
                 var entity_index = json_data["entity_talk"];
                 var text = json_data["text"];
-                panel.show_text(text)
+                panel.show_talk(text)
                 selected_index = entity_index
                 update_for_entity()
                 board.update_state();
@@ -141,6 +157,9 @@ MainGame.prototype = {
             } else if (json_data.hasOwnProperty("victory")) {
                 panel.show_text("VICTORY!!!")
                 is_animation_running = true
+
+            } else if (json_data.hasOwnProperty("game_ready")) {
+                this._game_ready = true;
             }
         }
     },

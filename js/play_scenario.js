@@ -59,7 +59,9 @@ PlayScenario.prototype = {
         if (button.name ==='main_menu') {
             this.state.start(button.name);
         } else {
-            this.state.states["game"]._scenario = button.name
+            this.state.states["game"]._game_hash = "";
+            this.state.states["game"]._scenario = button.name;
+            this.state.states["game"]._number_of_players = 1;
             this.state.start("game");
         }
     }
