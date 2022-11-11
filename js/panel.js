@@ -87,9 +87,21 @@ panel.initialize = function (cols, rows, buttons_n) {
     panel.entity_logo.inputEnabled = true;
     panel.entity_logo.events.onInputOver.add(function (object, pointer) {
         panel.entity_logo.scale.setTo(1.4);
+
+        if (panel.hint_timer) {
+            clearTimeout(panel.hint_timer);
+            panel.hint_timer = null;
+        }
+        panel.hint_timer = window.setTimeout(onGetHint.bind(this, -1), 1000);
     });
     panel.entity_logo.events.onInputOut.add(function (object, pointer) {
         panel.entity_logo.scale.setTo(1.2);
+
+        if (panel.hint_timer) {
+            clearTimeout(panel.hint_timer);
+            panel.hint_timer = null;
+        }
+        panel.remove_hint();
     });
 
     var style_for_entity_name = { font: "24px Helvetica", fill: "#FFFFFF", wordWrap:

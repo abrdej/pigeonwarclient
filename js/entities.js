@@ -46,15 +46,17 @@ loadBitmaps = function () {
     game.load.image('Reaper', 'res/reaper.png');
     game.load.image('Trailer', 'res/trailer.png');
     game.load.image('Sentinel', 'res/sentinel.png');
+    game.load.image('Dron', 'res/combat_robot.png');
 
     game.load.image('Saurian Web', 'res/saurian_web.png');
 
-    game.load.image('moveable', 'res/moveable.png');
+    game.load.image('move', 'res/moveable.png');
     game.load.image('sabers', 'res/sabers.png');
     game.load.image('invisibility', 'res/invisibility.png');
-    game.load.image('bullet', 'res/bullet.png');
+    game.load.image('shoot', 'res/bullet.png');
     game.load.image('grenade', 'res/grenade.png');
     game.load.image('tongue_of_fire', 'res/tongue_of_fire.png');
+    game.load.image('gun', 'res/bullet.png');
 
     game.load.image('bullet', 'res/bullet.png');
     game.load.image('bum', 'res/bum.png');
@@ -67,6 +69,7 @@ loadBitmaps = function () {
     game.load.image('counterattack', 'res/counterattack.png');
     game.load.image('native_attack', 'res/native_attack.png');
     game.load.image('magic_bullet', 'res/magic_bullet.png');
+    game.load.image('magic_suck', 'res/magic_suck.png');
     game.load.image('magic_splash', 'res/magic_splash.png');
     game.load.image('monk_use_1', 'res/monk_use_1.png');
     game.load.image('monk_use_2', 'res/monk_use_2.png');
@@ -90,9 +93,10 @@ loadBitmaps = function () {
     game.load.image('guardian_attack', 'res/guardian_attack.png');
     game.load.image('shield', 'res/shield.png');
     game.load.image('power_bullet', 'res/power_bullet.png');
+    game.load.image('power_bullet_bum', 'res/power_bullet_bum.png');
     game.load.image('laser', 'res/laser.png');
     game.load.image('teleport', 'res/teleport.png');
-    game.load.image('sniper_bullet', 'res/sniper_bullet.png');
+    game.load.image('sniper_shot', 'res/sniper_bullet.png');
     game.load.image('sniper_bullet_explosion', 'res/sniper_bullet_explosion.png');
     game.load.image('hypnosis', 'res/hypnosis.png');
     game.load.image('stone_skin', 'res/stone_skin.png');
@@ -159,3 +163,20 @@ loadBitmaps = function () {
 
     game.load.start();
 };
+
+loadSounds = function () {
+    game.load.audio('background', ['res/audio/Illusory-Realm-MP3.mp3']);
+    game.load.audio('shoot', ['res/audio/shotgun-firing-3-14483.mp3']);
+    game.load.audio('grenade', ['res/audio/musket-explosion-6383.mp3']);
+    game.load.audio('grenade_throw', ['res/audio/throwing-clothes-on-the-floor-2-48133.mp3']);
+    game.load.audio('blow_the_ax', ['res/audio/axe-slash-1-106748.mp3']);
+    game.load.audio('magic_bullet', ['res/audio/magic-spell-6005.mp3']);
+    game.load.audio('slash', ['res/audio/slash-21834.mp3']);
+    game.load.audio('sword_blow', ['res/audio/mixkit-sword-slash-swoosh-1476.mp3']);
+    game.load.audio('sniper_shot', ['res/audio/laser_gun_sound-40813.mp3']);
+    game.load.audio('hypnosis', ['res/audio/fantasy_ui_button_6-102219.mp3']);
+    game.load.audio('power_bullet', ['res/audio/laser-zap-90575.mp3']);
+    game.load.audio('invisibility', ['res/audio/invisibility-spell-98622.mp3']);
+    game.load.audio('remove_invisibility', ['res/audio/deathmagic-94937.mp3']);
+    game.load.audio('walk', ['res/audio/marching-loop-32908.mp3']);
+}

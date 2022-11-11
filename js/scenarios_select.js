@@ -1,14 +1,14 @@
 SelectScenario = function(game) {
     this.game = game;
     this.holdicons = [];
-    this.scenarios = ["Saurian Web", "Wolves Dinner", "Dark Forest", "Skirmish"];
-    this.keys = ["saurian_web", "wolves_dinner", "dark_forest", "skirmish"];
+    this.scenarios = ["Saurian Web", "Castaway", "Dark Forest", "Skirmish"];
+    this.keys = ["saurian_web", "castaway", "dark_forest", "skirmish"];
 };
 
 SelectScenario.prototype = {
     preload: function() {
         this.game.load.image('saurian_web', 'res/saurian.png');
-        this.game.load.image('wolves_dinner', 'res/wolf.png');
+        this.game.load.image('castaway', 'res/wolf.png');
         this.game.load.image('dark_forest', 'res/dark_forest.png');
         this.game.load.image('skirmish', 'res/blow_the_ax.png');
     },

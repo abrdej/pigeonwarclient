@@ -29,9 +29,13 @@ MainGame.prototype = {
         animation.initialize();
 
         console.log("Scenario: " + game._scenario);
+
+        this._music = game.add.audio('background');
+        this._music.loopFull();
     },
     preload: function () {
         loadBitmaps();
+        loadSounds();
     },
     update: function () {
         // console.log("update");
@@ -130,6 +134,11 @@ MainGame.prototype = {
                 console.log("hint: " + hint);
                 panel.set_hint(hint);
 
+            } else if (json_data.hasOwnProperty("entity_description")) {
+                var hint = json_data["entity_description"];
+                console.log("hint: " + hint);
+                panel.set_hint(hint);
+
             } else if (json_data.hasOwnProperty("effect_description")) {
                 var effect_hint = json_data["effect_description"];
                 console.log("effect_hint: " + effect_hint);
@@ -199,14 +208,24 @@ function onButton(n) {
 }
 
 function onGetHint(n) {
-    var msg = JSON.stringify({
-        get_button_description: {
-            client_id: client_id,
-            button: n
-        }
-    }) + '\n';
-    console.log(msg);
-    client.send(msg);
+    if (n === -1) {
+        var msg = JSON.stringify({
+            get_entity_description: {
+                client_id: client_id,
+            }
+        }) + '\n';
+        console.log(msg);
+        client.send(msg);
+    } else {
+        var msg = JSON.stringify({
+            get_button_description: {
+                client_id: client_id,
+                button: n
+            }
+        }) + '\n';
+        console.log(msg);
+        client.send(msg);
+    }
 }
 
 function onEffectHint(effect_key) {

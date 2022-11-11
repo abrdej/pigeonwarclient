@@ -1,8 +1,8 @@
 PlayScenario = function(game) {
     this.game = game;
     this.buttons = [];
-    this.button_texts = ['Saurian Web', "Wolf's Night", 'Back'];
-    this.keys = ['saurian_web', 'wolfs_night', 'main_menu'];
+    this.button_texts = ['Saurian Web', "Castaway", 'Back'];
+    this.keys = ['saurian_web', 'castaway', 'main_menu'];
 };
 
 PlayScenario.prototype = {

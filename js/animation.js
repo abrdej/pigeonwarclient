@@ -43,13 +43,17 @@ move_handler = function (animation_data) {
         motion_speed_slow(distance),
         Phaser.Easing.Linear.None);
     move_tween.onComplete.add(function () {
-       is_animation_running = false;
+        sound.stop()
+        is_animation_running = false;
     });
     is_animation_running = true;
     move_tween.start();
+
+    let sound = game.add.audio('walk');
+    sound.loopFull();
 };
 
-shoot_base_handler = function (animation_data, bullet_bitmap, explosion_bitmap) {
+shoot_base_handler = function (animation_data, bullet_bitmap, explosion_bitmap, sound_effect, explosion_sound_effect) {
     var from_index = animation_data[1];
     var to_index = animation_data[2];
 
@@ -87,6 +91,12 @@ shoot_base_handler = function (animation_data, bullet_bitmap, explosion_bitmap) 
                 explosion.destroy();
             });
             explosion_tween.start();
+
+            if (explosion_sound_effect) {
+                let sound = game.add.audio(explosion_sound_effect);
+                sound.play();
+            }
+
             is_animation_running = false;
         } else {
             is_animation_running = false;
@@ -94,9 +104,14 @@ shoot_base_handler = function (animation_data, bullet_bitmap, explosion_bitmap) 
     });
     is_animation_running = true;
     bullet_tween.start();
+
+    if (sound_effect) {
+        let sound = game.add.audio(sound_effect);
+        sound.play();
+    }
 };
 
-move_and_return_base_handler = function (animation_data, specified_return, flush_bitmap, moving_bitmap) {
+move_and_return_base_handler = function (animation_data, specified_return, flush_bitmap, moving_bitmap, sound_effect) {
     var entity_id = animation_data[1];
     var to_index = animation_data[2];
 
@@ -163,6 +178,11 @@ move_and_return_base_handler = function (animation_data, specified_return, flush
     });
     is_animation_running = true;
     move_to_tween.start();
+
+    if (sound_effect) {
+        let sound = game.add.audio(sound_effect);
+        sound.play();
+    }
 };
 
 change_health_handler = function (animation_data) {
@@ -226,7 +246,7 @@ change_power_handler = function (animation_data) {
     change_power_tween.start();
 };
 
-bitmap_flush_base_handler = function (animation_data, flush_bitmap, time, hide_index) {
+bitmap_flush_base_handler = function (animation_data, flush_bitmap, time, hide_index, sound_effect) {
     var index = animation_data[1];
 
     var entity_id = 0;
@@ -259,24 +279,33 @@ bitmap_flush_base_handler = function (animation_data, flush_bitmap, time, hide_i
     });
     is_animation_running = true;
     flush_tween.start();
+
+    if (sound_effect) {
+        let sound = game.add.audio(sound_effect);
+        sound.play();
+    }
 };
 
-change_bitmap_base_handler = function (animation_data, new_bitmap) {
+change_bitmap_base_handler = function (animation_data, new_bitmap, sound_effect) {
     var entity_id = animation_data[1];
     entities[entity_id].loadTexture(new_bitmap);
-    console.log("hehe");
+
+    if (sound_effect) {
+        let sound = game.add.audio(sound_effect);
+        sound.play();
+    }
 };
 
 shoot_handler = function (animation_data) {
-    return shoot_base_handler(animation_data, 'bullet', 'bum');
+    return shoot_base_handler(animation_data, 'bullet', 'bum', 'shoot');
 };
 
 grenade_handler = function (animation_data) {
-    return shoot_base_handler(animation_data, 'grenade', 'detonation');
+    return shoot_base_handler(animation_data, 'grenade', 'detonation', 'grenade_throw', 'grenade');
 };
 
 sabers_handler = function (animation_data) {
-    return move_and_return_base_handler(animation_data, false, 'sabers_attack');
+    return move_and_return_base_handler(animation_data, false, 'sabers_attack', null, 'slash');
 };
 
 tongue_of_fire_handler = function (animation_data) {
@@ -284,7 +313,7 @@ tongue_of_fire_handler = function (animation_data) {
 };
 
 set_invisibility_handler = function (animation_data) {
-    return change_bitmap_base_handler(animation_data, 'saberhand_transparency');
+    return change_bitmap_base_handler(animation_data, 'saberhand_transparency', 'invisibility');
 };
 
 set_immortality_handler = function (animation_data) {
@@ -292,7 +321,7 @@ set_immortality_handler = function (animation_data) {
 };
 
 remove_invisibility_handler = function (animation_data) {
-    return change_bitmap_base_handler(animation_data, 'Saberhand');
+    return change_bitmap_base_handler(animation_data, 'Saberhand', 'remove_invisibility');
 };
 
 start_sorcerer_attack_handler = function (animation_data) {
@@ -304,11 +333,11 @@ end_sorcerer_attack_handler = function (animation_data) {
 };
 
 drain_handler = function (animation_data) {
-    return move_and_return_base_handler(animation_data, false, "native_attack");
+    return move_and_return_base_handler(animation_data, false, "native_attack", null, "slash");
 };
 
 counterattack_handler = function (animation_data) {
-    return move_and_return_base_handler(animation_data, false, "native_attack");
+    return move_and_return_base_handler(animation_data, false, "native_attack", null, "slash");
 };
 
 warrior_blow_handler = function (animation_data) {
@@ -320,11 +349,11 @@ prison_connection_handler = function (animation_data) {
 };
 
 sword_blow_handler = function (animation_data) {
-    return bitmap_flush_base_handler(animation_data, 'samurai_sword_blow', 150, true);
+    return bitmap_flush_base_handler(animation_data, 'samurai_sword_blow', 150, true, 'sword_blow');
 };
 
 dodge_handler = function (animation_data) {
-    return bitmap_flush_base_handler(animation_data, 'samurai_dodge', 250, true);
+    return bitmap_flush_base_handler(animation_data, 'samurai_dodge', 250, true, "slash");
 };
 
 claws_handler = function (animation_data) {
@@ -370,10 +399,13 @@ magic_bullet_handler = function (animation_data) {
     });
     is_animation_running = true;
     monk_cast_spell_tween_1.start();
+
+    magic_bullet_sound = game.add.audio('magic_bullet');
+    magic_bullet_sound.play();
 };
 
 blow_the_ax_handler = function (animation_data) {
-    return move_and_return_base_handler(animation_data, false, 'destroyer_attack');
+    return move_and_return_base_handler(animation_data, false, 'destroyer_attack', null, "blow_the_ax");
 };
 
 poisoned_missile_handler = function (animation_data) {
@@ -401,7 +433,7 @@ magic_suck_handler = function (animation_data) {
 };
 
 power_bullet_handler = function (animation_data) {
-    return shoot_base_handler(animation_data, 'power_bullet', 'power_bullet_bum');
+    return shoot_base_handler(animation_data, 'power_bullet', 'power_bullet_bum', 'power_bullet');
 };
 
 laser_handler = function (animation_data) {
@@ -439,7 +471,7 @@ teleport_handler = function (animation_data) {
 };
 
 sniper_shot_handler = function (animation_data) {
-    return shoot_base_handler(animation_data, 'sniper_bullet', 'sniper_bullet_explosion');
+    return shoot_base_handler(animation_data, 'sniper_shot', 'sniper_bullet_explosion', 'sniper_shot');
 };
 
 havoc_handler = function (animation_data) {
@@ -491,7 +523,7 @@ rocket_launcher_handler = function (animation_data) {
 };
 
 hypnosis_handler = function (animation_data) {
-    return bitmap_flush_base_handler(animation_data, 'hypnosis', 150, false);
+    return bitmap_flush_base_handler(animation_data, 'hypnosis', 150, false, 'hypnosis');
 };
 
 jaw_spider_handler = function (animation_data) {
@@ -577,7 +609,7 @@ spider_web_handler = function (animation_data) {
 };
 
 eye_shoot_handler = function (animation_data) {
-    return shoot_base_handler(animation_data, 'power_bullet');
+    return shoot_base_handler(animation_data, 'power_bullet', null, 'power_bullet');
 };
 
 eye_shoot_to_sides_handler = function (animation_data) {
